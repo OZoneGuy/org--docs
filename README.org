@@ -1,0 +1,18 @@
+#+title: Read The Docs Documentation
+#+author: Omar Alkersh ─ O-Zone-Guy
+#+options: toc:nil
+
+* Introduction
+  The purpose of this repo is to store the org files containing the documentation for the tools and languages I use. This project is exported into html using Emacs' ~org-publish-project~. The configuration for this project is contained in =config= file with instructions.
+
+* Why
+  I like knowing a lot of things. But let's be real, if I know 5 languages, 3 frameworks, and over a dozen tools I am bound to forget some basic thing about them. Which we all do, hence why Stackovereflow is till a thing!
+
+  Instead of having to google things and look for the link or answer that had the code snippet I need now but saw an eternity ago, everything is here! Just navigate to the relevant section and the information should be there. Better yet, use a tool like grep or find and you will have the exact location of the information.
+
+  Exporting it to html and hosting it on my website is just a convenience for me and a chance for me to share my knowledge with everyone.
+
+* Tools used
+  - [[https://orgmode.org/][org-mode]]
+  - [[https://www.spacemacs.org/][Spacemacs]] and Emacs flavour.
+  - [[https://github.com/paulzql/org-html-themes#readtheorg][Read The Docs org mode theme]]
