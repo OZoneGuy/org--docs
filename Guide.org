@@ -1,0 +1,38 @@
+#+title: Document Guideline
+#+author: Omar Alkersh
+#+options: toc:nil
+#+latex_header: \usepackage[a4paper, margin=1in]{geometry} \usepackage[utf8]{inputenc}
+
+* Outline
+  Each file in this project is a an ~org~ file that is then exported to html to be hosted on my website. They include a file, using the ~#+SETUPFILE:~ tag, that defines the HTML theme.
+
+* Document Structure
+  Each org file defines the following cookies:
+  - ~#+TITLE~
+  - ~#+AUTHOR~
+    - The default value is "Omar Alkersh", my name.
+  - ~#+DESCRIPTION:~
+
+
+  Then comes the document body. It could start with an introduction to the topic discussed. Then is followed by the actual content.
+
+  At the end a =Read Also= section which contains a list of links that is generated automatically by a code snippet(TO BE WRITTEN).
+
+* Directory structure
+  Each top level directory, directories at the same level as this file, holds a major topic. Each major topic has file(s) to explain it and possibly sub-directories that contain subtopics related to the major topic. Organisation is up to the author's discretion.
+
+* Workflow
+  1. Write the org files to follow the structure and the guide above.
+     - This also include the code snippet, or the indexing functionality.
+  2. Publish the project using ~org-publish-project~.
+     - The code responsible for publishing:
+       #+BEGIN_SRC elisp :export code
+         (setq org-publish-project-alist
+               '(("org"
+                  :base-directory "/path/to/project"
+                  :publishing-directory "~/projects/doc_html"))
+               )
+       #+END_SRC
+     - The HTML files are exported to a separate directory
+  3. The export directory is synced to the server hosting the website using ~rsync~.
+  4. The HTML files are hosted by the relevant server and is accessible from the internet(domain name to be acquired).
