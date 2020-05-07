@@ -1,0 +1,21 @@
+#+NAME: get-list
+#+BEGIN_SRC python :exports results :results value org
+  import re
+  import fnmatch
+  import os
+
+  FILES = [f for f in os.listdir('.') if fnmatch.fnmatch(f, '*.org')]
+
+  r = re.compile('#\+TITLE: (.*)', re.I)
+
+  lists = ""
+  for f in FILES:
+      fr = open(f, 'r')
+      try:
+          lists += " - [[file:" + f + "][" + r.match(fr.read()).group(1) + "]]\n"
+          # lists +=  r.match(fr.read()).group(1) + "\n"
+      except:
+          pass
+
+  return lists
+#+END_SRC
