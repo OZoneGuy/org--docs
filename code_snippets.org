@@ -1,10 +1,10 @@
 #+NAME: get-list
-#+BEGIN_SRC python :exports results :results value raw
+#+BEGIN_SRC python :exports results :results value raw :var cur_file="code_snippets.org"
   import re
   from fnmatch import fnmatch
   from os import listdir
 
-  FILES = [f for f in listdir('.') if fnmatch(f, '[!\.\*]*.org')]
+  FILES = [f for f in listdir('.') if fnmatch(f, '[!\.\*]*.org') and f != cur_file]
 
   r = re.compile('#\+TITLE: (.*)', re.I)
 
