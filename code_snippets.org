@@ -1,10 +1,10 @@
 #+NAME: get-list
-#+BEGIN_SRC python :exports results :results value org
+#+BEGIN_SRC python :exports results :results value raw
   import re
-  import fnmatch
-  import os
+  from fnmatch import fnmatch
+  from os import listdir
 
-  FILES = [f for f in os.listdir('.') if fnmatch.fnmatch(f, '*.org')]
+  FILES = [f for f in listdir('.') if fnmatch(f, '[!\.\*]*.org')]
 
   r = re.compile('#\+TITLE: (.*)', re.I)
 
