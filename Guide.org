@@ -1,7 +1,6 @@
 #+title: Document Guideline
 #+author: Omar Alkersh
-#+options: toc:nil
-#+latex_header: \usepackage[a4paper, margin=1in]{geometry} \usepackage[utf8]{inputenc}
+#+SETUPFILE: theme-readtheorg.setup
 
 * Outline
   Each file in this project is a an ~org~ file that is then exported to html to be hosted on my website. They include a file, using the ~#+SETUPFILE:~ tag, that defines the HTML theme.
