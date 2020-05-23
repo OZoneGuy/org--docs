@@ -3,8 +3,11 @@
   import re
   from fnmatch import fnmatch
   from os import listdir
+  from os.path import isdir
 
-  FILES = [f for f in listdir('.') if fnmatch(f, '[!\.\*]*.org') and f != cur_file]
+  SIBLINGS = listdir('.')
+  FILES = [f for f in SIBLINGS if fnmatch(f, '[!\.\*]*.org') and f != cur_file]
+  DIRS = [f for f in SIBLINGS if isdir(f)]
 
   r = re.compile('#\+TITLE: (.*)', re.I)
 
@@ -17,5 +20,12 @@
       except:
           pass
 
+  for d in DIRS:
+      f = d + "/" + d + ".org"
+      try:
+          with open(f, 'r') as fr:
+              lists += " - [[file:" + f + "][" + r.match(fr.read()).group(1) + "]]\n"
+      except:
+          pass
   return lists
 #+END_SRC
