@@ -1,0 +1,3 @@
+#+title: Org Mode
+#+author: Omar Alkersh
+#+setupfile: ../theme-readtheorg.setup

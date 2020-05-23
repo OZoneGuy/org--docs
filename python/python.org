@@ -1,0 +1,3 @@
+#+title: Python
+#+author: Omar Alkersh
+#+setupfile: ../theme-readtheorg.setup
