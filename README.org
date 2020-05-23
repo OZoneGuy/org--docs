@@ -1,6 +1,7 @@
 #+title: Read The Docs Documentation
 #+author: Omar Alkersh ─ O-Zone-Guy
 #+options: toc:nil
+#+SETUPFILE: theme-readtheorg.setup
 
 * Introduction
   The purpose of this repository is to store the org files containing the documentation for the tools and languages I use. This project is exported into HTML using Emacs' ~org-publish-project~. The configuration for this project is contained in =config= file with instructions.
@@ -16,3 +17,5 @@
   - [[https://orgmode.org/][org-mode]]
   - [[https://www.spacemacs.org/][Spacemacs]] and Emacs flavour.
   - [[https://github.com/paulzql/org-html-themes#readtheorg][Read The Docs org mode theme]]
+* Documentation
+#+CALL: code_snippets.org:get-list(cur_file="README.org")
