@@ -23,7 +23,7 @@
 * Workflow
   1. Write the org files to follow the structure and the guide above.
      - This also include the code snippet, or the indexing functionality.
-  2. Publish the project using ~org-publish-project~.
+  2. Publish the project using ~org-publish-project~ with a prefix.
      - The code responsible for publishing:
        #+BEGIN_SRC elisp :export code
          (setq org-publish-project-alist
@@ -33,5 +33,7 @@
                )
        #+END_SRC
      - The HTML files are exported to a separate directory
+     - The prefix will force publish unchanged files.
+       - This is necessary because new might have been created and the table of content of the other files might need updating.
   3. The export directory is synced to the server hosting the website using ~rsync~.
   4. The HTML files are hosted by the relevant server and is accessible from the internet(domain name to be acquired).
