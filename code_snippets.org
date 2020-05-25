@@ -1,12 +1,12 @@
 #+NAME: get-list
-#+BEGIN_SRC python :exports results :results value raw :var cur_file="code_snippets.org"
+#+BEGIN_SRC python :exports results :results value raw :var ignore_pattern="code_snippets.org"
   import re
   from fnmatch import fnmatch
   from os import listdir
   from os.path import isdir
 
   SIBLINGS = listdir('.')
-  FILES = [f for f in SIBLINGS if fnmatch(f, '[!\.\*]*.org') and f != cur_file]
+  FILES = [f for f in SIBLINGS if fnmatch(f, '[!\.\*]*.org') and re.match(ignore_pattern, f) is None]
   DIRS = [f for f in SIBLINGS if isdir(f)]
 
   r = re.compile('#\+TITLE: (.*)', re.I)

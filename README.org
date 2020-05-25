@@ -17,4 +17,4 @@
   - [[https://www.spacemacs.org/][Spacemacs]] and Emacs flavour.
   - [[https://github.com/paulzql/org-html-themes#readtheorg][Read The Docs org mode theme]]
 * Documentation
-#+CALL: code_snippets.org:get-list(cur_file="README.org")
+#+CALL: code_snippets.org:get-list(ignore_pattern="README.org")
