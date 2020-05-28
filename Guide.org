@@ -15,7 +15,7 @@
 
   Then comes the document body. It could start with an introduction to the topic discussed. Then is followed by the actual content.
 
-  At the end a =Read Also= section which contains a list of links that is generated automatically by a code snippet(TO BE WRITTEN).
+  At the end a =Read Also= section which contains a list of links that is generated automatically by a code snippet.
 
 * Directory structure
   Each top level directory, directories at the same level as this file, holds a major topic. Each major topic has file(s) to explain it and possibly sub-directories that contain subtopics related to the major topic. Organisation is up to the author's discretion.
@@ -37,5 +37,5 @@
        - This is necessary because new might have been created and the table of content of the other files might need updating.
   3. The export directory is synced to the server hosting the website using ~rsync~.
   4. The HTML files are hosted by the relevant server and is accessible from the internet(domain name to be acquired).
-* Navigation
+* Read Also
 #+CALL: ./code_snippets.org:get-list(ignore_pattern="Guide")
