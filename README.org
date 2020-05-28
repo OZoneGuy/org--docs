@@ -1,5 +1,6 @@
 #+title: Read The Docs Documentation
 #+author: Omar Alkersh ─ O-Zone-Guy
+#+EXPORT_FILE_NAME: index
 #+SETUPFILE: theme-readtheorg.setup
 
 * Introduction
