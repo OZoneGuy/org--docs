@@ -18,7 +18,7 @@
 
   The minimal program is:
 
-  #+BEGIN_SRC c++
+  #+BEGIN_SRC C++
     int main(){} // A function called "main" that takes no arguments.
   #+END_SRC
 
@@ -28,7 +28,8 @@
 
   Most programs have some sort of output. To print to the screen you need to use ~cout~ which is the ~std~ namespace(will be discussed later). To call it you need to import the relevant library. Here is an example.
 
-  #+BEGIN_SRC c++
+  #+NAME: helloWorld
+  #+BEGIN_SRC C++ :results output verbatim
     #include <iostream>
 
     int main() {
@@ -36,9 +37,13 @@
     }
   #+END_SRC
 
+  If one was to put this program in a file and compile it then run it you will see the following output.
+
+  #+call: helloWorld()
+
   Here ~#include <iostream>~ tells the compiler to /include/ the ~iostream~ library, which has the standard I/O stream facilities. The line:
 
-  #+BEGIN_SRC c++
+  #+BEGIN_SRC C++
   std::cout << "Hello, World.\n";
   #+END_SRC
 
