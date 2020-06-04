@@ -14,5 +14,42 @@
 
   C++ is a compiled language. The text file is taken and processed, producing object files, which are linked then yielding an executable.
 
+* Hello, world!
+
+  The minimal program is:
+
+  #+BEGIN_SRC c++
+    int main(){} // A function called "main" that takes no arguments.
+  #+END_SRC
+
+  All C++ programs must define exactly one global ~main()~ function. This is the entry point of the program. The ~int~ value returned is returned to the system. This is the exit code. A non-zero value is considered an error. Most system do something with the return value, =UNIX= based systems do while =Windows= usually doesn't.
+
+  The ~main()~ function doesn't have to return any value. I believe ~return 0~ is implied.
+
+  Most programs have some sort of output. To print to the screen you need to use ~cout~ which is the ~std~ namespace(will be discussed later). To call it you need to import the relevant library. Here is an example.
+
+  #+BEGIN_SRC c++
+    #include <iostream>
+
+    int main() {
+      std::cout << "Hello, World.\n";
+    }
+  #+END_SRC
+
+  Here ~#include <iostream>~ tells the compiler to /include/ the ~iostream~ library, which has the standard I/O stream facilities. The line:
+
+  #+BEGIN_SRC c++
+  std::cout << "Hello, World.\n";
+  #+END_SRC
+
+  would make no sense without it.
+
+  The ~s << a~ operator is a *put to* operator. It inserts the second argument, ~a~, into the stream, ~s~, the precedes it. In this example we put the string ~"Hello, World.\n"~ into the standard output stream ~cout~.
+
+  Strings will be look at later.
+
+  The ~std::~ specifies that ~cout~ is found in the namespace ~std~, the standard library.
+
+  In essence, all code is placed in functions and is called directly, or indirectly, from ~main()~.
 * Read Also
 #+CALL: ../code_snippets.org:get-list(ignore_pattern="c\\+\\+")
