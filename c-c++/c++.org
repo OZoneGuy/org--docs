@@ -2,5 +2,17 @@
 #+author: Omar Alkersh
 #+SETUPFILE: ../theme-readtheorg.setup
 
+* Introduction
+
+  This page is based of my own experience and Stroustrup's book [[http://www.stroustrup.com/4th.html]["C++ Programming Language (4th Edition)]]".
+
+* Language basics
+
+  It is statically typed; the type of every entity must be known to the compiler at compile time. There is no ambiguity about what the type of variable or the signature of any function.
+
+  Stroustrup insists that C++ is a many paradigm language and we would be doing it injustice by calling it an OO language. To fully utilise C++ you need to understand that it has many paradigms that can be used simultaneously.
+
+  C++ is a compiled language. The text file is taken and processed, producing object files, which are linked then yielding an executable.
+
 * Read Also
 #+CALL: ../code_snippets.org:get-list(ignore_pattern="c\\+\\+")
