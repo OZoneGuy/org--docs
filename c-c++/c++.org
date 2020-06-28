@@ -91,7 +91,7 @@
 
 ** Arithmetic operations
 
-   C++ comes with the usual mathematical operators;
+   C++ comes with the usual mathematical operators:
    #+BEGIN_SRC C++
      x+y                             // plus
      +x                              // unary plus
@@ -102,6 +102,15 @@
      x%y                             // remainder/Modulus
 #+END_SRC
 
+   It also comes with boolean operations:
+   #+BEGIN_SRC C++
+     x == y;                         // equal
+     x != y;                         // not equal
+     x<y;                            // less than
+     x>y;                            // greater than
+     x <= y;                         // less than or equal
+     x >= y                          // greater than or equal
+#+END_SRC
 
 * Read Also
 #+CALL: ../code_snippets.org:get-list(ignore_pattern="c\\+\\+")
