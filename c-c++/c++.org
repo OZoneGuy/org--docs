@@ -56,5 +56,52 @@
   The ~std::~ specifies that ~cout~ is found in the namespace ~std~, the standard library.
 
   In essence, all code is placed in functions and is called directly, or indirectly, from ~main()~.
+
+* Variables and expressions
+  
+  In C++ there are 5 types of 'elementary' types; ~bool~, ~char~, ~int~, ~double~, and ~float~. They hold same values and behave similarly to other programming languages.
+
+** Declaration and Initialisation
+   
+   To declare a variable you specify its type followed by an identifier, the name.
+
+   #+BEGIN_SRC C++ 
+     type varName;
+   #+END_SRC
+
+   Initialising a variable is to give it a value. In C++ this can be done in multiple different ways. You have the traditional method using '=' the *curly-braced-delimited initialiser list*. Both methods can be mixed.
+   
+   #+name: = initialisaiton
+   #+BEGIN_SRC C++
+     int i = 5;
+   #+END_SRC
+
+
+   #+name: Braces initialisaiton
+   #+BEGIN_SRC C++
+     int i {5};
+   #+END_SRC
+
+   #+name: Mixed initialisaiton
+   #+BEGIN_SRC C++
+     int i = {5};
+   #+END_SRC
+
+   All the previous methods initialisation are equivalent.
+
+** Arithmetic operations
+
+   C++ comes with the usual mathematical operators;
+   #+BEGIN_SRC C++
+     x+y                             // plus
+     +x                              // unary plus
+     x-y                             // minus
+     -x                              // unary minus
+     x*y                             // multiply
+     x/y                             //divide
+     x%y                             // remainder/Modulus
+#+END_SRC
+
+
 * Read Also
 #+CALL: ../code_snippets.org:get-list(ignore_pattern="c\\+\\+")
