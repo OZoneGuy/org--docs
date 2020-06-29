@@ -112,5 +112,32 @@
      x >= y                          // greater than or equal
 #+END_SRC
 
+** The ~auto~ Keyword
+
+   When I first saw the ~auto~ keyword in C++ I was rather confused. When I learned what it does I was even more confused!
+
+   The ~auto~ keyword is used in variable declaration instead of the type. It does exactly what it sounds it does: automatically sets the type of the variable.
+
+   It is used as such:
+
+   #+BEGIN_SRC C++
+     auto varName;
+#+END_SRC
+
+#+RESULTS:
+
+   The 'issue' here is that C++ is statically typed language. So how does C++ know what type to use? What if I declare a variable then initialise it later? More importantly, why would I ever use anything else for variable declaration?
+   
+   To answer the first question, C++ will not allow you to declare a variable with the ~auto~ keyword without initialisation. So it will always use the type of the data it is being set to.
+   
+   Regarding the second question, in every day to day coding there is none! The only reason to not use it either one of those:
+
+   1) The definition is used in a large scope and you want to be clear to the reader what type this variable/method is.
+   2) You want to explicitly state the type of the variable(~float~ instead of ~double~).
+   
+   So yeah. Always use auto unless you *have* to explicitly state the type, or you cannot initialise a variable on declaration.
+   
+   Regarding late initialisation, Bjarne Stroustrup advices to never introduce a variable if you don't have a value to give it to.
+
 * Read Also
 #+CALL: ../code_snippets.org:get-list(ignore_pattern="c\\+\\+")
