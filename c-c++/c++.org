@@ -161,5 +161,18 @@
         constexpr double square(double x) {return x * x;}
       #+END_SRC
 
+** Pointers, References and Arrays.
+*** Arrays
+    
+    Arrays are a list of variables of the same type and with a fixed length. They are declared as such:
+
+    #+BEGIN_SRC C++
+      type varName[6];
+    #+END_SRC
+    #+CAPTION: An array of type ~type~ and length 6 which is called =varName=;
+    
+    Arrays' index start from ~0~. So for =varName= it stats from ~varName[0]~ and ends at ~varName[5]~.
+
+
 * Read Also
 #+CALL: ../code_snippets.org:get-list(ignore_pattern="c\\+\\+")
