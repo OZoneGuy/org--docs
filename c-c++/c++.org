@@ -145,21 +145,21 @@
    - ~constexpr~: Means roughly “to be evaluated at compile time.” This what you want to use when defining constants.
 
      
-   - Examples
+   Examples
 
-    #+BEGIN_SRC C++
-      double sum(const vector<double>&); // sum will not modify its arguments
-      vector<double> v {1, 2, 3, 4, 5};  // v is not a constant, it can be modidied
-      const double s1     = sum(v);      // OK;    evaluated at runtime, but cannot be changed later
-      constexpr double s2 = sum(v);      // error; sum(v) is not a constant expression.
-    #+END_SRC
+   #+BEGIN_SRC C++
+     double sum(const vector<double>&); // sum will not modify its arguments
+     vector<double> v {1, 2, 3, 4, 5};  // v is not a constant, it can be modidied
+     const double s1     = sum(v);      // OK;    evaluated at runtime, but cannot be changed later
+     constexpr double s2 = sum(v);      // error; sum(v) is not a constant expression.
+   #+END_SRC
 
     For a function to be ~constexpr~ it needs to be rather simple; just a ~return~ statement computing a value. It can have non constant arguments, but when that is done it will not be a ~constexpr~.
     
-    - Example
-      #+BEGIN_SRC C++
-        constexpr double square(double x) {return x * x;}
-      #+END_SRC
+   Example
+   #+BEGIN_SRC C++
+     constexpr double square(double x) {return x * x;}
+   #+END_SRC
 
 ** Pointers, References and Arrays.
 *** Arrays
