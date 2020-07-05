@@ -172,7 +172,77 @@
     #+END_SRC
     
     Arrays' index start from ~0~. So for =varName= it stats from ~varName[0]~ and ends at ~varName[5]~.
+*** Pointers
 
+    Pointers are variables that *store the location in memory* of a variable or a piece of data. The syntax for which is as such:
 
+    #+CAPTION: A pointer, called ~i~, to an ~int~.
+    #+BEGIN_SRC C++
+      int* i;
+    #+END_SRC
+    
+    ~i~ here is a pointer to location in memory which is supposed to hold data of type int.
+    
+    This has the consequence of when printing the value or reading it, it doesn't return the value stored but the location in memory where it is stored in.
+    
+    To access the value stored we use this syntax:
+
+    #+BEGIN_SRC C++
+      std::cout << *i;
+    #+END_SRC
+    
+    The prefix operator ~*~ means “contents of”. It returns the contents of the memory location pointed at by said pointer. Notice that it sort of does the opposite when used in the declaration. In declaration, it 'returns' a pointer while if applied to the variable it 'returns' the value.
+    
+    To get the memory location/address of a variable you would use the “address of” operator, ~&~. As such:
+    #+NAME: add_example
+    #+BEGIN_SRC C++ :includes <iostream>
+      int number = 10;
+      std::cout << "The value of 'number' is: " << number << ". And its address is: " << &number;
+    #+END_SRC
+
+    The previous code snippet produces the following output:
+    #+CALL: add_example()
+    
+    The best way to understand pointers is they /point/ to an object/data. They do not have, but they tell you where they are.
+    
+    An important note is that accessing member functions and variables of pointer objects is different from normal objects. The syntax of which is as such:
+
+    #+BEGIN_SRC C++
+      objpntr->func();                // Calling a function from a pointer.
+      obj.func();                     // Calling the same function but it is not a pointer.
+    #+END_SRC
+    
+    ~->~ is used to access member functions and variables instead of the 'dot' operator.
+*** References
+    Since =pointers= are 'objects' that point at stuff, =references= are just that! A /reference/ to an object or a value.
+    
+    Both =pointers= and =references= are similar in that they store the address of the object but for key differences.
+
+    - You access a reference with exactly the same syntax as an object.
+    - A reference always refers to the same object it was initialised to.
+    - There is no “null reference” as opposed to a “null pointer”, ~nullptr~.
+   
+      
+    You  may consider a pointer to be an alias of the object.
+    
+    To declare a reference, use the “reference to” suffix operator ~&~.
+    
+    #+BEGIN_SRC C++
+      int & iRef;
+    #+END_SRC
+    
+*** Constants and Pointers
+
+    There are four different combination of the ~const~ keyword and the pointer operator, the declarative one. Here are them:
+
+    #+BEGIN_SRC c++
+      int *            i;             // A normal operator. Can be modified and its contents can be modified.
+      int *const       i;             // A const pointer to int. The pointer cannot be modified, but its contents can be.
+      int const*       i;             // A pointer to a const int. The pointer can change but the contents cannot be.
+      const int *      i;             // Same as above.
+      const int *const i;             // A const pointer to a const int.
+    #+END_SRC
+
+    Since references have the same syntax as normal objects we can references [[Constants]]
 * Read Also
 #+CALL: ../code_snippets.org:get-list(ignore_pattern="c\\+\\+")
