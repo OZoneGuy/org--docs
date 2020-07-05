@@ -213,6 +213,19 @@
     #+END_SRC
     
     ~->~ is used to access member functions and variables instead of the 'dot' operator.
+*** Pointers, Arrays, and Pointer Arithmetic
+    
+    The interesting things about pointers and arrays is that you can use pointers to traverse and array. Arrays, more or less, store the location of the first item in the sequence and returns to you the item stored in the location based on the offset provided.
+    
+    For the array ~int[5] iArray;~ it reserves a sequence of locations in memory, 5 locations in this example, and when accessed like this ~iArray[3]~ it returns the item in the location with 3 /offsets/. The first item is stored at /offset/ 0 and the last at ~n-1~ for an n-length array.
+    
+    Now we can get the location of any item this array using pointer notation. What we can also do is /move/ the pointer using pointer arithmetic.
+    
+    The only mathematical operation allowed to a pointer is addition, and consequently subtraction. You can use any form of addition C++ provides; ~ptr++~, ~ptr--~, ~ptr+=2~, ~ptr+4~, etc.
+
+    What is noteworthy here is that if some data type requires more than one byte, or the smallest interval supported by the language/architecture, the pointer will increment by the required amount. Suppose type ~T~ requires 4 bytes, adding 1 to a pointer to ~T~ will not move the address by one but rather move it by 4 to the next available memory location.
+    
+    The difference between an array and a pointer is that an array is a [[Constants and Pointers][constant pointer]] with some syntactic sugar.
 *** References
     Since =pointers= are 'objects' that point at stuff, =references= are just that! A /reference/ to an object or a value.
     
