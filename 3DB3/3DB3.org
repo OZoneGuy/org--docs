@@ -90,9 +90,53 @@ Databases are systems that are responsible for managing data. While their data i
   This allows us to create user specific views and hide data from the user(don't confuse this with information hiding in software development), such as income, personal data, etc. This is called *logical data independence*.
 
   This in turn shields the users from the physical schema as well, how is the data stored physically. This is called *physical data independence*.
-* TODO Relational Algebra
+* Relational Algebra
+** TODO Selection and Projection
+** TODO Set Operations
+** TODO Renaming
+** Joins
+   Joins are rather useful in relational algebra and is one of the most common ways to combine information from two or more relations.
+
+   It can be technically be defined as cross product followed by selection then projection, but they are used far more than the regular cross product(this sequence is used so often it gets its own function!). Add to it the fact that cross product's results are far larger than any join, so it is very important that the implementation doesn't involve the cross product. This is done by applying selection and projection 'on the fly'. Hence all the love for joins.
+
+   There are multiple varieties for join operations.
+
+*** Conditional Joins
+    This is the most general form of join. It takes a /join condition/, /c/, and a pair of relations as arguments and returns a new relation. This can be defined using a selection and a cross product as follows:
+
+    $R ⋈_c S = σ_c (R×S)$ 
+    
+    Note the /c/ can, and usually does, refer to attributes of /R/ and /S/. The reference can be in the form of position or name, /R.4/ or /R.field_Name/.
+
+*** Equijoin
+    
+    This is a special form of the previous join. In an Equijoin, we match equal fields. Something like this:
+
+    $S⋈_{R.sid=S.id}R$     /Sometimes written as/ $S⋈_{sid}R$
+    
+    Notice that we are comparing the field on both relations. This has the side effect of unnamed fields in the final relation, since we don't know to which relation /sid/ belongs to.
+*** Natural Join
+    
+    A natural join is a more extreme form of equijoin, equality is specified on /all/ fields with same name on /R/ and /S/. In this case, we write it as such:
+
+    $S⋈R$
+    
+    Notice that it doesn't have condition specified. The equalities are implicit. Since there are so much of them, we don't bother writing them all down.
+** Division
+   
+   The division operator is most useful for queries such as “Find all the students who enrolled in all the courses.” Knowing what it does exactly and how to define it using other operators is a useful exercise, but not necessary. Not as popular as the other operators. In fact, most DBMS don't even bother implementing it as a distinct method but leaves the user to rely on other operators to achieve the same result, unlike the join operator.
+
+   So bear with me for a second, I need to go abstract for a bit. Imagine we have two relations, /A/ and /B/. Let /A/ have the fields /x/ and /y/ and /B/ have just /y/, which have the same domain as in /A/. $A ∈ ⟨x, y⟩$ and $B ∈ ⟨y⟩. Following so far? A division $A/B$ would be set of all /x/ values such that for *every* /y/ value in /B/ there is a tuple $⟨x, y⟩$ in /A/. $∀ y ∈ B ∙ (∃ x ∙ ⟨x, y⟩ ∈ A)$ this gives us the 𝑥s that satisfy this property. If you need to take your time or go for a walk to understand this feel free to.
+   
+   Division can be defined as:
+
+   $π_x((π_x(A) × B)-A)$
+
+ For examples regarding relation algebra see the book.
 * Footnotes
 
 [fn:2] I am assuming it is referencing the memory pages, not actual abstract pages.
 
 [fn:1] Database Management System
+
+#  LocalWords:  Equijoin equijoin
