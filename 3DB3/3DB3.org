@@ -3,7 +3,7 @@
 #+SETUPFILE: ../theme-readtheorg.setup
 
 #+begin_quote
-These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Systems-McGraw-Hill Science_Engineering_Math (2003)/ and thus will contain material directly from it.
+These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Systems-McGraw-Hill Science\_Engineering\_Math (2003)/ and thus will contain material directly from it.
 #+end_quote
 
 Databases are systems that are responsible for managing data. While their data is still stored on secondary storage devices, they differ form regular “flat” flat files. For starters, they are not flat! The data is usually stored in some sort of tree structure for efficiency and speed. The structure is specialised for whatever *DBMS[fn:1]* is handling the file. While maintaining speed and efficiency, the DBMS must ensure the following properties:
@@ -51,10 +51,10 @@ Databases are systems that are responsible for managing data. While their data i
    Courses(/cid:/ *string*, /cname:/ *string*, /credits:/ *integer*)
    Rooms(/rno:/ *integer*, /address:/ *string*, /capacity:/ *integer*)
    Enrolled(/sid:/ *string*, /cid:/ *string*, /grade:/ *string*)
-   Meets_In(/cid:/ *string*, /rno:/ *integer*, /time:/ *string*)
+   Meets\_In(/cid:/ *string*, /rno:/ *integer*, /time:/ *string*)
    #+end_quote
 
-   Looking at the previous scheme we can identify that *Students*, *Courses*, and *Rooms* are entities while *Enrolled* and *Meets_In* are relationships between these entities. The way we can see this is that *Enrolled* and *Meets_In* reference field names from the entities, while entities do not reference any already defined field names. *Enrolled* references /sid/ from *Students* and /cid/ from *Courses*.
+   Looking at the previous scheme we can identify that *Students*, *Courses*, and *Rooms* are entities while *Enrolled* and *Meets\_In* are relationships between these entities. The way we can see this is that *Enrolled* and *Meets\_In* reference field names from the entities, while entities do not reference any already defined field names. *Enrolled* references /sid/ from *Students* and /cid/ from *Courses*.
 
    #+begin_quote
    NOTE: This referencing is done implicitly. This is dependant on the project syntax and how the designing teams agree on the syntax. Some form of explicit referencing could be deployed all the same, or different entities could have the same field name while not referencing each other.
@@ -74,7 +74,7 @@ Databases are systems that are responsible for managing data. While their data i
 
    An example from the preview schema would be:
    #+begin_quote
-   Math_Course(/name:/ *String*, /grade:/)
+   Math\_Course(/name:/ *String*, /grade:/)
    #+end_quote
 
    This would be used to view all the students in some mathematics course. Notice that some vital fields are missing, /sid/ and /cid/. There are passed to create the view, but they don't necessarily show up in the final view. This information would be considered irrelevant to some users. If we want to show the /sid/ of each student then we can. We can also show the /cid/, but since in this example we are looking at one course there is no point in doing so
