@@ -1,0 +1,96 @@
+#+BRAIN_PARENTS: school
+
+#+title: 3DB3: Databases
+#+author: Omar Alkersh
+#+SETUPFILE: ../theme-readtheorg.setup
+
+#+begin_quote
+These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Systems-McGraw-Hill Science_Engineering_Math (2003)/ and thus will contain material directly from it.
+#+end_quote
+
+Databases are systems that are responsible for managing data. While their data is still stored on secondary storage devices, they differ form regular “flat” flat files. For starters, they are not flat! The data is usually stored in some sort of tree structure for efficiency and speed. The structure is specialised for whatever *DBMS[fn:1]* is handling the file. While maintaining speed and efficiency, the DBMS must ensure the following properties:
+  * *Concurrency*: multiple users can access the database simultaneously, while allowing the database designer to code it as if all transactions are done serially, not in parallel. As with any concurrent system that relies on some global state, this relies on a locking mechanism that stops multiple from altering the same data simultaneously to avoid data corruption or incorrect results.
+  * *Maintain Data Integrity*: The goes for both the physical data and any constrictions the designer put on the data fields.
+    * /physical Data/: The DBMS should be able to recover from a failed or an incomplete transaction. It does this by registering the transaction in the log *before* it is executed. In essence, all transactions are /atomic/. Meaning they are either successful or not successful. There are no partial transactions.
+    * /Constraints/: These are data constraints. They define the domain of each field and whether the data is valid or not. They define the data type for the field and its properties. This can be some variable function or a constant one. Example, it can check if the new purchase or money allocation goes over the total budget for the project or simply check if a number is positive. It is responsible for cancelling the transaction and informing the user of the failure.
+  * *Queries*: A DBMS should be able to run queries and answer questions about the database. Questions can be about the average salary in some faculty, the number of people who are born after a certain data, the shortest person, etc. Queries select and return entries/entities which satisfies certain properties. These queries can be over multiple tables and they are able to join records/entities depending on the command specified.
+
+
+  Some important takes:
+  1. Every object that is being read or written to is locked in either 'shared' or 'exclusive' mode respectively to ensure data integrity.
+     * Shared lock allows reading but not writing by other processes, while an exclusive stops other processes from accessing the resource completely.
+  2. A DBMS must be able to selectively force a collection of pages from the memory to storage. Some OS support is not satisfactory.
+  3. Periodic checkpoints can make crash recovery easier and faster. But check pointing often slows down normal execution. So some balance is necessary.
+
+* Structure of a DBMS
+
+  The DBMS has at the top /Views/ as the interface. The exact format of the view depends heavily on the application. This can be a GUI or a CLI. The /View/ is responsible for providing the SQL commands/statements to the DBMS.
+
+  Following is the /Query Evaluation Engine/. This takes the statements and prepares it for execution. The statement is first /parsed/ then potentially optimised for faster execution. Then it is turned to the /plan executor/, this is normally in the form of a tree of relational [[Relational Algebra][operators]]. These serve as the building blocks for any transaction.
+
+  Then comes the /method layer/. This is where the concept of *file* is defined. In a DBMS, a file is usually collection of pages[fn:2] or records. *Heap* files, or unordered files are also supported. This is where the relevant page information is stored for requesting read and write.
+
+  This sends requests to the /buffer manager/. This is where the pages are actually requested. It loads pages from storage to the memory as needed.
+
+  Lowest but not last is /disk space manager/. You guessed it! It manages how the DBMS uses space on the disk. The higher layers use methods provided by this layer to allocate, deallocate, read, and write pages.
+
+  To its side comes the /transaction manager/ and the /lock manager/. The former makes sure that the correct lock is applied by each transaction. A query only applies a shared lock, etc. While the /lock manager/ keeps track of all the locks.
+
+  Lastly is the /recovery manager/. Recall that the DBMS keeps a log of all transactions. This module is what handles the logs and is also responsible for recovery after a system crash.
+
+  The /buffer manager/ and the /disk space manager/ are what interacts with these modules.
+
+  :TODO: Insert a diagram for the system.
+* Levels of Abstraction in a DBMS
+
+  There are 3 abstraction level to any DBMS; [[Physical Schema]], [[Conceptual Schema]], and [[External Schema]].
+** Conceptual Schema
+   Sometimes called the /logical schema/, the conceptual schema describes the stored data in terms of the data model of the DBMS. In a relational DBMS, it describes all the relations and entities in the database. The example the book makes are students in a university; the students and courses are entities and the enrolment is stored as a relation.
+
+   #+CAPTION: Conceptual Schema example for students and courses
+   #+begin_quote
+   Students(/sid:/ *string*, /name:/ *string*, /login:/ *string*, /age:/ *integer*, /gpa/: *real*)
+   Courses(/cid:/ *string*, /cname:/ *string*, /credits:/ *integer*)
+   Rooms(/rno:/ *integer*, /address:/ *string*, /capacity:/ *integer*)
+   Enrolled(/sid:/ *string*, /cid:/ *string*, /grade:/ *string*)
+   Meets_In(/cid:/ *string*, /rno:/ *integer*, /time:/ *string*)
+   #+end_quote
+
+   Looking at the previous scheme we can identify that *Students*, *Courses*, and *Rooms* are entities while *Enrolled* and *Meets_In* are relationships between these entities. The way we can see this is that *Enrolled* and *Meets_In* reference field names from the entities, while entities do not reference any already defined field names. *Enrolled* references /sid/ from *Students* and /cid/ from *Courses*.
+
+   #+begin_quote
+   NOTE: This referencing is done implicitly. This is dependant on the project syntax and how the designing teams agree on the syntax. Some form of explicit referencing could be deployed all the same, or different entities could have the same field name while not referencing each other.
+   #+end_quote
+
+   Arriving at any conceptual design is done iteratively. This process is referred to as /conceptual database design/.
+
+** Physical Schema
+
+   The physical schema describes how these relations are stored on the physical storage. This decides the file organisation and creates an auxiliary data structure, called *indexes*, to speed up data retrieval operations. Again, this is an iterative process called /physical database design/.
+
+** External Schema
+
+   This schema describes how the data is displayed and to whom. This allows us to customise what data is displayed and who has access to which data. For any DBMS, there is /exactly/ one Conceptual Schema and one Physical Schema, but there can be any number of External Schema tailored to each particular user/user group.
+
+   The external schema creates views for the users. A view is essentially a relation, except that it is not explicitly stored physically, but it references already existing relations(and entities) in some convenient format.
+
+   An example from the preview schema would be:
+   #+begin_quote
+   Math_Course(/name:/ *String*, /grade:/)
+   #+end_quote
+
+   This would be used to view all the students in some mathematics course. Notice that some vital fields are missing, /sid/ and /cid/. There are passed to create the view, but they don't necessarily show up in the final view. This information would be considered irrelevant to some users. If we want to show the /sid/ of each student then we can. We can also show the /cid/, but since in this example we are looking at one course there is no point in doing so
+
+* Data Independence
+
+  In essence, this concepts dictates that are insulated from changes to the way the data is structured and stored. This means that for external schema views, if the conceptual schema changed, can undergo some definition change to produce the same result. That is, assuming that there has not been a fundamental change and the data is essentially reorganised.
+
+  This allows us to create user specific views and hide data from the user(don't confuse this with information hiding in software development), such as income, personal data, etc. This is called *logical data independence*.
+
+  This in turn shields the users from the physical schema as well, how is the data stored physically. This is called *physical data independence*.
+* TODO Relational Algebra
+* Footnotes
+
+[fn:2] I am assuming it is referencing the memory pages, not actual abstract pages.
+
+[fn:1] Database Management System
