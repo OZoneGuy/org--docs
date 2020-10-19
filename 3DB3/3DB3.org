@@ -48,9 +48,13 @@ Databases are systems that are responsible for managing data. While their data i
    #+CAPTION: Conceptual Schema example for students and courses
    #+begin_quote
    Students(/sid:/ *string*, /name:/ *string*, /login:/ *string*, /age:/ *integer*, /gpa/: *real*)
+
    Courses(/cid:/ *string*, /cname:/ *string*, /credits:/ *integer*)
+
    Rooms(/rno:/ *integer*, /address:/ *string*, /capacity:/ *integer*)
+
    Enrolled(/sid:/ *string*, /cid:/ *string*, /grade:/ *string*)
+
    Meets_In(/cid:/ *string*, /rno:/ *integer*, /time:/ *string*)
    #+end_quote
 
