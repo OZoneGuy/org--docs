@@ -1,5 +1,3 @@
-#+BRAIN_PARENTS: school
-
 #+TITLE: 3DB3: Databases
 #+AUTHOR: Omar Alkersh
 #+SETUPFILE: ../theme-readtheorg.setup
