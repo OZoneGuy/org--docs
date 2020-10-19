@@ -1,7 +1,7 @@
 #+BRAIN_PARENTS: school
 
-#+title: 3DB3: Databases
-#+author: Omar Alkersh
+#+TITLE: 3DB3: Databases
+#+AUTHOR: Omar Alkersh
 #+SETUPFILE: ../theme-readtheorg.setup
 
 #+begin_quote
