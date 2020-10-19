@@ -9,14 +9,13 @@
   FILES = [f for f in SIBLINGS if fnmatch(f, '[!\.\*]*.org') and re.match(ignore_pattern, f) is None]
   DIRS = [f for f in SIBLINGS if isdir(f)]
 
-  r = re.compile('#\+TITLE: (.*)', re.I)
+  r = re.compile('.*#\+TITLE: (.*)', re.I)
 
   lists = ""
   for f in FILES:
-      fr = open(f, 'r')
       try:
-          lists += " - [[file:" + f + "][" + r.match(fr.read()).group(1) + "]]\n"
-          # lists +=  r.match(fr.read()).group(1) + "\n"
+          with open(f, 'r') as fr:
+              lists += " - [[file:" + f + "][" + r.search(fr.read()).group(1) + "]]\n"
       except:
           pass
 
@@ -24,7 +23,7 @@
       f = d + "/" + d + ".org"
       try:
           with open(f, 'r') as fr:
-              lists += " - [[file:" + f + "][" + r.match(fr.read()).group(1) + "]]\n"
+              lists += " - [[file:" + f + "][" + r.search(fr.read()).group(1) + "]]\n"
       except:
           pass
   return lists
