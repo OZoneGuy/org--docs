@@ -3,7 +3,7 @@
 #+SETUPFILE: ../theme-readtheorg.setup
 
 #+begin_quote
-These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Systems-McGraw-Hill Science_Engineering_Math (2003)/ and thus will contain material directly from it.
+These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Systems (2003)/ and thus will contain material directly from it.
 #+end_quote
 
 Databases are systems that are responsible for managing data. While their data is still stored on secondary storage devices, they differ form regular “flat” flat files. For starters, they are not flat! The data is usually stored in some sort of tree structure for efficiency and speed. The structure is specialised for whatever *DBMS[fn:1]* is handling the file. While maintaining speed and efficiency, the DBMS must ensure the following properties:
