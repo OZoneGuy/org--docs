@@ -1,0 +1,9 @@
+#+TITLE: Tools
+#+BRAIN_CHILDREN: emacs
+
+#+BRAIN_PARENTS: README
+#+SETUPFILE: theme-readtheorg.setup
+
+
+* Links
+#+CALL: ./code_snippets.org:get-brain-links()

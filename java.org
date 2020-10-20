@@ -1,0 +1,8 @@
+#+BRAIN_PARENTS: languages languages
+
+#+title: Java
+#+author: Omar Alkersh
+#+setupfile: ./theme-readtheorg.setup
+
+* Links
+#+CALL: ./code_snippets.org:get-brain-links()

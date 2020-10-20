@@ -1,6 +1,0 @@
-#+title: Spacemacs
-#+author: Omar Alkersh
-#+setupfile: ../theme-readtheorg.setup
-
-* Read Also
-#+CALL: ../code_snippets.org:get-list(ignore_pattern="spacemacs")

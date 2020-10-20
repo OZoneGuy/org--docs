@@ -1,6 +1,0 @@
-#+title: C-C++
-#+author: Omar Alkersh
-#+SETUPFILE: ../theme-readtheorg.setup
-
-* Read Also
-#+CALL: ../code_snippets.org:get-list(ignore_pattern="c-c\\+\\+")

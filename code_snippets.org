@@ -28,3 +28,34 @@
           pass
   return lists
 #+END_SRC
+
+
+#+NAME: get-brain-links
+#+BEGIN_SRC emacs-lisp :exports results :results raw
+  (org-brain-switch-brain "~/projects/org-docs/")
+  ;; (message org-brain-path)
+  (org-brain-children (file-name-sans-extension (buffer-file-name)))
+  (defun link (loction name)
+    "Creates an org link from a `location` and a `name`'''"
+    (concat " - "
+            (concat "[[file:"
+                    (concat entry
+                            (concat ".org]["
+                                    (concat title "]]\n")))))
+    )
+  (defun entry-to-link (entry)
+    "Creates a link from an org brain entry"
+    (let ((title (org-brain-title entry)))
+      (link entry title )))
+
+  (let ((doc-children (reduce #'concat (mapcar 'entry-to-link
+                                               (org-brain-children (file-name-sans-extension (buffer-file-name))))))
+        (doc-parents (reduce #'concat (mapcar 'entry-to-link
+                                              (org-brain-parents (file-name-sans-extension (buffer-file-name))))))
+        (doc-friends (reduce #'concat (mapcar 'entry-to-link
+                                              (org-brain-friends (file-name-sans-extension (buffer-file-name)))))))
+    (concat "** Children\n"
+            (concat doc-children (concat "** Parents\n"
+                                         (concat doc-parents (concat "** Friends\n"
+                                                                     doc-friends))))))
+#+END_SRC

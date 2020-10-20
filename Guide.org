@@ -1,3 +1,5 @@
+#+BRAIN_PARENTS: README
+
 #+title: Document Guideline
 #+author: Omar Alkersh
 #+SETUPFILE: theme-readtheorg.setup
@@ -37,5 +39,5 @@
        - This is necessary because new might have been created and the table of content of the other files might need updating.
   3. The export directory is synced to the server hosting the website using ~rsync~.
   4. The HTML files are hosted by the relevant server and is accessible from the internet(domain name to be acquired).
-* Read Also
-#+CALL: ./code_snippets.org:get-list(ignore_pattern="Guide")
+* Links
+#+CALL: code_snippets.org:get-brain-links()

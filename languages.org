@@ -1,0 +1,9 @@
+#+BRAIN_CHILDREN: c++ python java
+
+#+TITLE: Programming Languages
+#+BRAIN_PARENTS: README
+#+SETUPFILE: theme-readtheorg.setup
+
+
+* Links
+#+CALL: code_snippets.org:get-brain-links()

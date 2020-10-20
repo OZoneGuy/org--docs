@@ -1,0 +1,8 @@
+#+BRAIN_PARENTS: emacs emacs
+
+#+title: Org Mode
+#+author: Omar Alkersh
+#+setupfile: ./theme-readtheorg.setup
+
+* Links
+#+CALL: ./code_snippets.org:get-brain-links()

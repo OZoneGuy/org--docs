@@ -1,3 +1,5 @@
+#+BRAIN_CHILDREN: Guide languages tools_and_frameworks school
+
 #+title: Read The Docs Documentation
 #+author: Omar Alkersh ─ O-Zone-Guy
 #+SETUPFILE: theme-readtheorg.setup
@@ -16,5 +18,5 @@
   - [[https://orgmode.org/][org-mode]]
   - [[https://www.spacemacs.org/][Spacemacs]] and Emacs flavour.
   - [[https://github.com/paulzql/org-html-themes#readtheorg][Read The Docs org mode theme]]
-* Documentation
-#+CALL: code_snippets.org:get-list(ignore_pattern="README.org")
+* Links
+#+CALL: code_snippets.org:get-brain-links()

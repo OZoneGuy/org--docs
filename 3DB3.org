@@ -1,6 +1,8 @@
+#+BRAIN_PARENTS: school school
+
 #+TITLE: 3DB3: Databases
 #+AUTHOR: Omar Alkersh
-#+SETUPFILE: ../theme-readtheorg.setup
+#+SETUPFILE: ./theme-readtheorg.setup
 
 #+begin_quote
 These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Systems (2003)/ and thus will contain material directly from it.
@@ -133,6 +135,8 @@ Databases are systems that are responsible for managing data. While their data i
    $π_x((π_x(A) × B)-A)$
 
  For examples regarding relation algebra see the book.
+* Links
+#+CALL: ./code_snippets.org:get-brain-links()
 * Footnotes
 
 [fn:2] I am assuming it is referencing the memory pages, not actual abstract pages.

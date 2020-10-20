@@ -1,0 +1,8 @@
+#+BRAIN_CHILDREN: org-mode spacemacs
+
+#+TITLE: Emacs
+#+BRAIN_PARENTS: tools_and_frameworks
+#+SETUPFILE: theme-readtheorg.setup
+
+* Links
+#+CALL: ./code_snippets.org:get-brain-links()

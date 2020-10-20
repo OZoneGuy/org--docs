@@ -1,6 +1,8 @@
+#+BRAIN_PARENTS: languages languages
+
 #+title: C++
 #+author: Omar Alkersh
-#+SETUPFILE: ../theme-readtheorg.setup
+#+SETUPFILE: ./theme-readtheorg.setup
 
 * Introduction
 
@@ -257,5 +259,5 @@
     #+END_SRC
 
     Since references have the same syntax as normal objects we can references [[Constants]]
-* Read Also
-#+CALL: ../code_snippets.org:get-list(ignore_pattern="c\\+\\+")
+* Links
+#+CALL: ./code_snippets.org:get-brain-links()
