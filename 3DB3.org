@@ -95,7 +95,6 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    This in turn shields the users from the physical schema as well, how is the data stored physically. This is called *physical data independence*.
 
 * NEXT Introduction to Database design
-  
 * TODO The Relation Model
 * Relational Algebra
 ** TODO Selection and Projection
@@ -140,6 +139,175 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    $π_x((π_x(A) × B)-A)$
 
  For examples regarding relation algebra see the book.
+* Queries, Programming, Triggers
+  
+  #+BEGIN_COMMENT:
+  The SQL language was developed by at IBM and was later adopted by many vendors. It consists of the following aspects:
+  
+  * *The Data Manipulation Language*
+
+    This subset is responsible for and allows us to query and manipulate the data itself. Manipulation can be in the form of insertion, deletion, or modification of the 'rows' or entities.
+
+  * *The Data d*
+
+  #+END_COMMENT:
+  
+  Queries are what allows us to manipulate the Database, whether it be the stored data or the database structure itself. SQL is the most common language for database queries and is the focus of the book.
+  
+  We will be using the following table definition in our examples for SQL statements:
+  
+  #+BEGIN_QUOTE:
+  Sailors(_/sid:/ *integer*_, /sname:/ *string*, /rating:/ *integer*, /age:/ *real*)
+  
+  Boats(_/bid:/ *integer*_, /bname:/ *string*, /color:/ *string*)
+
+  Reserves(_/sid:/ *integer*, /bid:/ *integer*, /day:/ *date*_)
+  #+END_QUOTE:
+  
+  The tables related to these deviations can be found [[http://pages.cs.wisc.edu/~dbbook/openAccess/thirdEdition/exercise_data/all_tables.zip][here]] as a zip file.
+
+**  Basic Query Form
+
+   Each /query/ has the following generic for:
+
+   #+BEGIN_EXAMPLE
+     SELECT [ DESTINCT ] select-list
+       FROM from-list
+      WHERE conditions;
+  #+END_EXAMPLE
+
+  Fist is the ~SELECT~ statement, which identifies it as a query, followed by the list of columns/fields to be retained or showed in the results. Next is the ~FROM~ keyword, which specifies a cross product of tables. Or more simply, followed by the list of tables to run the query on. Lastly is the optional ~WHERE~, where you can specify conditions on the selection.
+  
+  Such query can be easily represented in relational algebra.
+
+  :TODO: Add algebra examples.
+  
+  Here is an example of a simple query.
+  #+CAPTION: Find the names and ages of all the sailors.
+  #+LABEL: Q:selectSailors
+  #+BEGIN_SRC sql
+    SELECT DISTINCT S.sname, S.age
+      FROM Sailors S;
+  #+END_SRC
+
+  The result is a set of rows containing the fields /S.sname/ and /S.age/. If more than one sailor have the same name and age, the entry will only appear once. This is due to the ~DISTINCT~ keyword; if omitted we will get duplicate entries. Since there are no conditions, this is equivalent to the projection, /π/, operation in relational algebra.
+
+  Another example:
+  
+  #+CAPTION: Find all the sailors with a rating higher than 7
+  #+LABEL: Q:querSelSRating7
+  #+BEGIN_SRC sql
+    SELECT S.sid, S.sname, S.rating, S.age
+      FROM Sailors AS S
+     WHERE S.rating > 7;
+  #+END_SRC
+  
+  This query uses the optional keyword ~AS~  which acts like a projection, $ρ$.
+ 
+  When evaluating a query, SQL evaluates it in the following order:
+ 
+  1. Compute the cross product of the tables in the *from-list*
+  2. Delete rows in the cross product that fail the *CONDITION*
+  3. Delete all columns not in *select-list*
+  4. If ~DISTINCT~ is specified, eliminate duplicate rows
+  
+     
+  This is basic recipe for SQL evaluation, but usually is inefficient. A DBMS doesn't usually evaluate as stated. But that discussion will probably come at a later date.
+
+  #+begin_center
+  More examples of queries can be found in the book.
+  #+end_center
+*** Expressions and Strings in the ~SELECT~ Statement
+
+   Consider the following query:
+
+   #+LABEL: Q:exprAndString
+   #+BEGIN_SRC sql
+     SELECT S.sname, S.rating+1 AS rating, R.day
+       FROM Sailors S, Reserves R
+      WHERE S.name LIKE 'John%';
+   #+END_SRC
+
+   We can see that in the *column-list* we have a mathematical expression and the use of ~AS~. SQL allows for expressions on column names or constants. It follows this structure: ~expression AS new_name~, where ~expession~ is any expression as described and ~new_name~ is the column name for the computed data. ~AS~ here serves as a projection, $ρ$. In this example we add 1 to the rating of all the sailors in the query and name the results *rating*.
+   
+   In the ~WHERE~ part of the statement we are comparing strings. For strings we can use the ~LIKE~ keyword when we want to use some wildcard, i.e we give part of the string the query will match it. Wildcards in SQL are ~%~ analogous to ~*~ in regex, and ~_~ which matches any one character.
+*** Set Operations
+    
+    When evaluating queries we can make of use some set operations, such as /Union/, /Intersect/, and /Except/, or /set difference/. These operations match their definitions in Set theory.
+
+    * Union format
+      #+begin_quote
+        QUERY0
+        
+        /UNION/
+        
+        ...
+        
+        /UNION/
+        
+        QUERYn
+      #+end_quote
+      
+    * Intersect
+      
+      #+begin_quote
+        QUERY0
+        
+        /INTERSECT/
+        
+        ...
+        
+        /INTERSECT/
+        
+        QUERYn
+      #+end_quote
+
+    * Set Difference (/Except/)
+
+      #+begin_quote
+        QUERY0
+        
+        /EXCEPT/
+        
+        ...
+        
+        /EXCEPT/
+        
+        QUERYn
+      #+end_quote
+      
+*** Nested Query
+
+    Since queries simply return a set of rows and their input is a set of rows, we can chain them. Or more accurately, /nest/ queries inside of queries. The nested queries can appear in the ~FROM~, ~HAVING~ (to be discussed later), or the ~WHERE~ clauses.
+    
+    We will be looking into the ~WHERE~ clause for now. To compare a condition using set queries we use the following keywords:
+
+    * ~IN~ and ~NOT IN~
+
+      This is analogous to the $∈$ and $∉$ operations.
+
+    * ~EXISTS~
+
+      As far as I can tell, this is exactly like ~IN~. Except for the fact that the query has to be reevaluated for each entry on the parent query.
+
+    * ~ANY~
+      
+      This is usually used to compare the data to all the rows in the nested query. Returns true if there is at least one case where the condition holds. Analogous to $∃$.
+
+      #+CAPTION: ~ANY~ example
+      #+begin_src sql
+        SELECT S.sid
+          FROM Sailors S
+         WHERE S.age > ANY (SELECT S2.age
+                              FROM Sailors S2
+                             WHERE S2.name Like 'Bob%')
+      #+end_src
+      
+      This query return the id of all sailors who are older than any sailor whose name begins with 'Bob'.
+
+    * ~ALL~
+
+      Similar to ~ANY~ but the condition has to be met with all the returned rows in the nested query. Analogous to $∀$.
 * Links
 #+CALL: ./code_snippets.org:get-brain-links()
 * Footnotes
