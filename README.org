@@ -1,7 +1,7 @@
 #+BRAIN_CHILDREN: Guide languages tools_and_frameworks school
 
 #+title: Read The Docs Documentation
-#+author: Omar Alkersh ─ O-Zone-Guy
+#+author: Omar Alkersh ─ OZoneGuy
 #+SETUPFILE: theme-readtheorg.setup
 
 * Introduction
