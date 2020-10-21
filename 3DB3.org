@@ -238,9 +238,13 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
     * Union format
       #+begin_quote
         QUERY_{0}
+        
         /UNION/
+        
         ...
+        
         /UNION/
+        
         QUERY_{n}
       #+end_quote
       
@@ -248,9 +252,13 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
       
       #+begin_quote
         QUERY_{0}
+        
         /INTERSECT/
+        
         ...
+        
         /INTERSECT/
+        
         QUERY_{n}
       #+end_quote
 
@@ -258,9 +266,13 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
 
       #+begin_quote
         QUERY_{0}
+        
         /EXCEPT/
+        
         ...
+        
         /EXCEPT/
+        
         QUERY_{n}
       #+end_quote
       
