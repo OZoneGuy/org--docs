@@ -32,9 +32,6 @@
 
 #+NAME: get-brain-links
 #+BEGIN_SRC emacs-lisp :exports results :results raw
-  (org-brain-switch-brain "~/projects/org-docs/")
-  ;; (message org-brain-path)
-  (org-brain-children (file-name-sans-extension (buffer-file-name)))
   (defun link (loction name)
     "Creates an org link from a `location` and a `name`'''"
     (concat " - "
@@ -58,4 +55,5 @@
             (concat doc-children (concat "** Parents\n"
                                          (concat doc-parents (concat "** Friends\n"
                                                                      doc-friends))))))
+;; (message (substring (org-brain-entry-path (org-brain-get-entry-from-title "Emacs")) 0 nil))
 #+END_SRC
