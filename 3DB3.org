@@ -237,43 +237,31 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
 
     * Union format
       #+begin_quote
-        QUERY0
-        
+        QUERY_{0}
         /UNION/
-        
         ...
-        
         /UNION/
-        
-        QUERYn
+        QUERY_{n}
       #+end_quote
       
     * Intersect
       
       #+begin_quote
-        QUERY0
-        
+        QUERY_{0}
         /INTERSECT/
-        
         ...
-        
         /INTERSECT/
-        
-        QUERYn
+        QUERY_{n}
       #+end_quote
 
     * Set Difference (/Except/)
 
       #+begin_quote
-        QUERY0
-        
+        QUERY_{0}
         /EXCEPT/
-        
         ...
-        
         /EXCEPT/
-        
-        QUERYn
+        QUERY_{n}
       #+end_quote
       
 *** Nested Query
