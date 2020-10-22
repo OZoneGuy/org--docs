@@ -1,4 +1,4 @@
-#+BRAIN_PARENTS: school school
+#+BRAIN_PARENTS: school
 
 #+TITLE: 3DB3: Databases
 #+AUTHOR: Omar Alkersh
@@ -308,6 +308,77 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
     * ~ALL~
 
       Similar to ~ANY~ but the condition has to be met with all the returned rows in the nested query. Analogous to $∀$.
+
+    * ~UNIQUE~
+
+      Similar to ~EXISTS~, but instead of returning the set on entries it returns true or false. Based on whether there are duplicate entries in the sub-query.
+
+**** ~INTERSECTION~ Using ~IN~
+
+     We can write intersection using ~IN~, ~NOT IN~, ~NOT EXISTS~, or ~NOT UNIQUE~.
+
+*** Aggregate Operations
+    * ~COUNT( [DISTINCT] A)~
+      Counts the number of rows in ~A~, where ~A~ can be a list of columns or just one columns. Adding ~DISTINCT~ will count the /unique/ rows.
+    * ~SUM( [DISTINCT] A)~
+      Sums numerical entries in some columns.
+    * ~AVG( [DISTINCT] A)~
+      Returns the average of sum numerical column.
+    * ~MIN(A)~ and ~MAX(A)~
+      Return the minimum/maximum of some column(s).
+      
+
+    Something to note is that we cannot mix the aggregate operations with the column list. So something like the following is illegal:
+    
+    #+CAPTION: Illegal query
+    #+LABEL: Q:AgrIllegal
+    #+BEGIN_SRC sql
+      SELECT S.snam, MAX(S.age)
+        FROM Sailors S;
+    #+END_SRC
+
+    While this is legal:
+    
+    #+CAPTION: Legal Aggregation Query
+    #+LABEL: Q:AgrLegal
+     #+BEGIN_SRC sql
+      SELECT S.snam, S.age
+        FROM Sailors S
+       WHERE S.age =
+             (SELECT MAX(S2.age)
+             FROM Sailors S2)
+     #+END_SRC
+
+     This query was used to get the oldest sailors in the database.
+     
+*** Grouping, ~GROUP BY~ and ~HAVING~
+    There are some scenarios where we want to group the results based on 'qualification'. Like grouping students by year, or sailors by rating. This is allowed by the ~GROUP BY~ keyword. Its syntax is as follows:
+    
+    #+BEGIN_SRC sql
+      SELECT target-list
+        FROM relation-list
+       WHERE qualification
+       GROUP BY group-list
+      HAVING group-qualification;
+    #+END_SRC
+
+    * The target list could be:
+      * An aggregate operation,
+      * or an attribute name
+        * Attributes must be a subset of ~group-list~, i.e. they must appear in ~group-list~.
+  
+          
+    The rest are self explanatory.
+
+    A group are the set of tuples with the same values for all attributes in the ~group-list~.
+    
+    ~group-qualification~ can only contain attributes from the ~group-list~ or aggregate operations.
+    
+    This is evaluated as follows:
+    1. The cross product is computed from ~relation-list~
+    2. Tuples that fail ~qualification~ are discarded
+    3. Tuples are grouped based on ~group-list~ as discussed earlier
+    4. Groups that do not meet ~group-qualification~ are discarded.
 * Links
 #+CALL: ./code_snippets.org:get-brain-links()
 * Footnotes
