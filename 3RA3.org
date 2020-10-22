@@ -1,0 +1,56 @@
+#+NICKNAMES: 3ra3
+#+BRAIN_PARENTS: school
+
+#+TITLE: Requirements Engineering
+#+AUTHOR: Omar Alkersh
+#+SETUPFILE: ./theme-readtheorg.setup
+
+#+begin_quote
+These notes are based of the computer science class 3RA3 offered by Dr. Richard Paige at McMaster. Any similarities are intentional.
+#+end_quote
+
+* Overview to Requirements Engineering
+  
+  The requirements engineering is the process of *creating a set of requirements* to *help developers*, of any sort,  to *create a system* that complies with the client's needs and wants.
+
+** What are Requirements 
+   
+   From that we can say that requirements are some *condition* that must be complied with. Some examples could be:
+   * Things the product/system must do:
+     * Calculate total cost
+     * Do the taxes
+     * Draw graphics on the screen[fn:1]
+   * Qualities the product must have:
+     * The calculations must be done quickly
+     * The product must be accessible to /X/ group of people
+   * Constraints the product must obey:
+     * The system shall always be available during work hours
+
+*** Requirement Qualities   
+    There are qualities that make a requirement /good/. If a requirement is *necessary*, *verifiable*, and *attainable* then it is a good requirement.
+
+    It is important to note that requirements are meant for /others/ to read, not you. So make sure that the requirements explicitly meet these qualities.
+    
+    A bad requirement doesn't meet all of these qualities; it isn't /necessary/, /verifiable/, and /attainable/.
+   
+** Note about Requirements Engineering
+   #+begin_quote
+   “A requirements specification should provide individuals with everything they need to know to satisfy the relevant stakeholders... but nothing more.” --- Parnas, modified by McDermid, modified by Vickers.
+   #+end_quote
+    
+   Hence:
+   * Not restricted to software
+   * Concerned with /what/ not the /how/
+   * Design decision is best left to the designers
+     * Not necessarily different people
+   * Must separate the requirements from the design decisions
+   
+     
+* Basics of Requirements Engineering
+  
+* Links
+#+CALL: ./code_snippets.org:get-brain-links()
+
+* Footnotes
+
+[fn:1]The actual language used is usually different. 
