@@ -137,7 +137,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    #+CAPTION: Relationship example
    #+BEGIN_SRC dot :file img/DB3/relations_example.png
      graph G {
-       enrolled [shape=diamonf, label=Enrolled_In];
+       enrolled [shape=diamond, label=Enrolled_In];
 
        student [shape=rectangle, label=Student];
        id [label=<<u>SID</u>>];
@@ -147,11 +147,14 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
 
        course [shape=rectangle, label=Course];
        c_num [label=<<u>Course_Number</u>>];
-       name [label=Name];
+       c_name [label=Name];
        cred [label=Credits];
+       course -- {c_num, c_name, cred};
+
+       enrolled -- {course, student};
      }
    #+END_SRC
-   
+
    Relationships can also store information about the relation. For example, we can record when was the course last taken and what was grade of the student. This is done by adding attributes to the relation itself.
    
    #+CAPTION: Relationship with attributes
