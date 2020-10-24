@@ -94,7 +94,251 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
 
    This in turn shields the users from the physical schema as well, how is the data stored physically. This is called *physical data independence*.
 
-* NEXT Introduction to Database design
+* Introduction to Database design
+  
+  The purpose of a database is to store information about real life systems and represent them. In a relational database, there are two main concepts used to achieve this; entities and relationships.
+** Entities
+   Entities' purpose is to simulate actual real life objects. Consider a university. If we want to simulate using a relational database, we would use entities to represent students, professors, courses, etc. It is analogous to classes in OOP but not quite the same. As a rule of thump, if you are not sure what to use to represent something see if you would use a class to represent it.
+   
+   Entities have attributes. These attributes are data about these entities; a student can have 'name', 'id', and 'level', while a professor could have 'id', 'name', 'salary', etc. The attributes chosen for a specific entity will depend on the system and what the client wants to store about them.
+
+   In an entity relations diagram, ER diagram, entities are represented using rectangles and attributes using ovals. Here is an example[fn:3].
+   
+   #+CAPTION: Entity with attributes example
+   #+BEGIN_SRC dot :file img/DB3/entity_example.png
+     graph G {
+       student [shape=rectangle, label=Student];
+       id [label=SID];
+       name [label=Name];
+       level [label=Level];
+       student -- {id, name, level};
+     }
+   #+END_SRC
+
+   Sometimes we want to identify each entity with some unique attribute. This is usually done is the form of 'ID', or some variant. This is represent by underlining the 'key' attributes. There could be multiple key attributes for the same entity. In this scenario the unique combination is what is used to identify each entity. This is called the /key set/.
+   
+   When assigning unique attribute(s) to an entity, no two different entities can have the same /key set/.
+   
+   #+CAPTION: Entity with a unique key
+   #+BEGIN_SRC dot :file img/DB3/entity_key_example.png
+     graph G {
+       student [shape=rectangle, label=Student];
+       id [label=<<u>SID</u>>];
+       name [label=Name];
+       level [label=Level];
+       student -- {id, name, level};
+     }
+   #+END_SRC
+   
+** Relationships
+   
+   Having just entities is not enough to represent a system. We need to also describe how these entities interact with each other, or what is their 'relations'. Continuing with our university example, suppose we have courses and we want to show that a student takes a specific course or a set of courses. This is done through relationships. They are represented using diamonds in an ER diagram.
+
+   #+CAPTION: Relationship example
+   #+BEGIN_SRC dot :file img/DB3/relations_example.png
+     graph G {
+       enrolled [shape=diamonf, label=Enrolled_In];
+
+       student [shape=rectangle, label=Student];
+       id [label=<<u>SID</u>>];
+       name [label=Name];
+       level [label=Level];
+       student -- {id, name, level};
+
+       course [shape=rectangle, label=Course];
+       c_num [label=<<u>Course_Number</u>>];
+       name [label=Name];
+       cred [label=Credits];
+     }
+   #+END_SRC
+   
+   Relationships can also store information about the relation. For example, we can record when was the course last taken and what was grade of the student. This is done by adding attributes to the relation itself.
+   
+   #+CAPTION: Relationship with attributes
+   #+BEGIN_SRC dot :file img/DB3/relations_attr_example.png
+     graph G {
+       rank=same;
+       enrolled [shape=diamond, label=Enrolled_In];
+       dt [label=Date_Taken];
+       score [label=Grade];
+
+       enrolled -- {dt, score};
+
+       student [shape=rectangle, label=Student];
+       id [label=<<u>SID</u>>];
+       name [label=Name];
+       level [label=Level];
+       student -- {id, name, level};
+
+       course [shape=rectangle, label=Course];
+       c_num [label=<<u>Course_Number</u>>];
+       c_name [label=Name];
+       cred [label=Credits];
+       course -- {c_num, c_name, cred};
+
+       enrolled -- {student, course};
+     }
+   #+END_SRC
+   
+*** Constraints
+    Sometimes you want to put constraints on relationships, like having that all students must be enrolled in a course or that each course must have exactly one instructor, if they have any. The first one is called a /participation constraint/ while the latter is called a /key constraint/.
+
+**** Participation Constraint
+     
+     It basically means that *all* instances of an entity must participate in the relation. It is represented by *bold* line connecting the affected entity with the relation.
+     
+     #+CAPTION: Participation constraint example
+     #+BEGIN_SRC dot :file img/DB3/part_const_example.png
+
+       graph G {
+         rank=same;
+         enrolled [shape=diamond, label=Enrolled_In];
+         dt [label=Date_Taken];
+         score [label=Grade];
+
+         enrolled -- {dt, score};
+
+         student [shape=rectangle, label=Student];
+         id [label=<<u>SID</u>>];
+         name [label=Name];
+         level [label=Level];
+         student -- {id, name, level};
+
+         course [shape=rectangle, label=Course];
+         c_num [label=<<u>Course_Number</u>>];
+         c_name [label=Name];
+         cred [label=Credits];
+         course -- {c_num, c_name, cred};
+
+         enrolled -- course;
+         enrolled -- student [style=bold, penwidth=3.5];
+       }
+     #+END_SRC
+
+**** Key Constraint
+     
+     This indicates that each instance of an entity can participate in a relationship *only once*.
+     
+     #+CAPTION: Teaches relationship
+     #+BEGIN_SRC dot :file img/DB3/key_const_example.png
+       graph G {
+         teaches [shape=diamond, label=Teaches];
+
+         prof [shape=rectangle, label=Instructor];
+         p_id [label=<<u>ID</u>>];
+         p_name [label=Name];
+         prof -- {p_id, p_name};
+
+         course [shape=rectangle, label=Course];
+         c_num [label=<<u>Course_Number</u>>];
+         c_name [label=Name];
+         cred [label=Credits];
+         course -- {c_num, c_name, cred};
+
+         teaches -- prof;
+         teaches -- course [arrowhead=none, arrowtail=normal, dir=both];
+       }
+     #+END_SRC
+
+     This diagram can be improved for better representation, but I am just keeping it simple for the example.
+     
+*** More than two in a relation
+    So far we looked at relations where only two entities are participating. But that doesn't mean that more entities couldn't participate in the same relation, they definitely could! But we prefer as little participants as possible in a single relation to maintain simplicity and maintainability. Usually if you have more than three entities in the same relation it means that it could be simpler and you're doing it wrong. But it depends entirely on the rules you want to preserve and portray.
+
+*** Aggregation
+    If you find yourself with three or more entities in a single relation, try to consider /aggregation/. This is basically relations over relations. /\*insert meme here\*/.
+
+    They are represented as such in an ER diagram:
+    #+CAPTION: Aggregation example
+    #+BEGIN_SRC dot :file img/DB3/aggr_example.png
+      graph G {
+        compound=true;
+        teaches [shape=diamond, label=Teaches];
+        supervises [shape=diamond, label=Supervises];
+
+        superv [shape=rectangle, label=Supervisor];
+        s_id [label=<<u>ID</u>>];
+        s_name [label=Name];
+        superv -- {s_id, s_name};
+
+        prof [shape=rectangle, label=Instructor];
+        p_id [label=<<u>ID</u>>];
+        p_name [label=Name];
+
+        course [shape=rectangle, label=Course];
+        c_num [label=<<u>Course_Number</u>>];
+        c_name [label=Name];
+        cred [label=Credits];
+
+        supervises -- superv;
+        supervises -- teaches [lhead=cluster_teaches];
+
+        subgraph cluster_teaches {
+          style=dashed;
+          prof -- {p_id, p_name};
+          course -- {c_num, c_name, cred};
+          teaches -- prof;
+          teaches -- course [arrowhead=none, arrowtail=normal, dir=both];
+      }
+      }
+    #+END_SRC
+     
+*** Weak entities
+    Sometimes we want to store information that are relevant to a specific instant of an entity. For example, the university might want to your address and contact information. But there would no point in keeping this information after you left the and it would be quite useless to give them a key set since they are unique to you! Here is where /weak entities/ come to play. They are entities that are identified by another entity which it is related to. They are identified by their related entity and /maybe/ their own key, since you might have a few addresses so we want to identify each one separately.
+    
+    In an ER diagram they appear similar to a normal entity by but they drawn in bold and their relation as well. As such:
+
+    #+CAPTION: Weak Entity example
+    #+BEGIN_SRC dot :file img/DB3/weak_ent_example.png
+      graph G {
+        student [shape=rectangle, label=Student];
+        id [label=SID];
+        name [label=Name];
+        level [label=Level];
+        student -- {id, name, level};
+
+        address [shape=rectangle, label=Address, penwidth=3.5];
+        p_code [label=<<u>Postal Code</u>>];
+        st_name [label="Street Name"];
+        city [label=City];
+        prov [label=Province];
+        address -- {p_code, st_name, city, prov};
+
+        addresses [shape=diamond, label=Addresses, penwidth=3.5];
+        addresses -- address [penwidth=3.5, dir=both, arrowhead=none];
+        addresses -- student;
+      }
+    #+END_SRC
+    
+    This has the added benefit of being able to store information about the relation. While it is not necessarily useful here, it can be  vital in other scenarios. So it is best to keep it in the tool belt
+
+** Class Hierarchy
+    You ever heard classes and sub classes in OOP? Well, this is basically it but for databases! Sub classes inherit attributes from their parent class and they can be treated like their parent class. This is usually used when multiple entities share a common set of attributes or if you have different kinds of the same entities, like employees. It is represented as a *ISA* triangle connecting bellow the parent and above the children. As such:
+    
+    #+CAPTION: *ISA* classes hierarchy example
+    #+BEGIN_SRC dot :file img/DB3/isa_example.png
+      graph G {
+        employee [shape=rectangle, label=Employee];
+        ssn [label=<<u>SSN</u>>];
+        name [label=Name];
+        employee -- {ssn, name};
+
+        h_employee [shape=rectangle, label=Hourly_Employee];
+        h_wage [label=hourly_wage];
+        h_hours [label=hours_worked];
+        h_employee -- {h_wage, h_hours};
+
+        c_employee [shape=rectangle, label=Contracted_Employee];
+        c_id [label=contract_id];
+        c_employee -- c_id;
+
+        em_isa [label=ISA, shape=triangle];
+        employee:s -- em_isa:n ;
+        em_isa:s -- {c_employee:n, h_employee:n};
+      }
+    #+END_SRC
+    
+    For class hierarchies we might want to define some constraints. Those are /covering constraint/ and /overlapping constraint/. The first dictates whether or not sub classes *must* cover the entire parent class, i.e every instance of the parent class must be part of at least one sub class. The latter dictates whether or not sub classes can overlap. These depend on the system being represented. They have no representation in the ER diagram but are included as notes and annotations for the diagram. In absence of a /covering constraint/ we assume that there isn't any and the sub classes don't have to cover the parent. For /overlapping constraint/ we assume that sub classes *cannot* overlap.
 * TODO The Relation Model
 * Relational Algebra
 ** TODO Selection and Projection
@@ -382,6 +626,8 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
 * Links
 #+CALL: ./code_snippets.org:get-brain-links()
 * Footnotes
+
+[fn:3] My diagrams are not coloured, the diagrams you will get have different colours for relations and entities. And they will be organised better.
 
 [fn:2] I am assuming it is referencing the memory pages, not actual abstract pages.
 
