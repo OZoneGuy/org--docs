@@ -388,17 +388,6 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
  For examples regarding relation algebra see the book.
 * Queries, Programming, Triggers
   
-  #+BEGIN_COMMENT:
-  The SQL language was developed by at IBM and was later adopted by many vendors. It consists of the following aspects:
-  
-  * *The Data Manipulation Language*
-
-    This subset is responsible for and allows us to query and manipulate the data itself. Manipulation can be in the form of insertion, deletion, or modification of the 'rows' or entities.
-
-  * *The Data d*
-
-  #+END_COMMENT:
-  
   Queries are what allows us to manipulate the Database, whether it be the stored data or the database structure itself. SQL is the most common language for database queries and is the focus of the book.
   
   We will be using the following table definition in our examples for SQL statements:
@@ -626,6 +615,91 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
     2. Tuples that fail ~qualification~ are discarded
     3. Tuples are grouped based on ~group-list~ as discussed earlier
     4. Groups that do not meet ~group-qualification~ are discarded.
+
+** Null Value
+
+   Some fields may have a null value. Meaning that they don't have a value. The behaviour of a null value in a field can be somewhat unpredictable. For starter, null does not equal any other value but itself. When using a null value in operation the behaviour is as follows:
+   * In Boolean operations it can produce /unknown/ as a results
+     * ~NOT null~ = ~unknown~
+     * ~True OR null~ = ~True~
+     * ~False OR null~ = ~unknown~
+     * ~True AND null~ = ~unknown~
+     * ~False AND null~ = ~False~
+   * If a ~WHERE~ clause receives ~unknown~ it is terminated, essentially treated as ~False~
+   * Any arithmetic operation will return unknown when given ~null~
+   * All aggregation operations will not count ~null~ values, except for ~COUNT~.
+   
+     
+   It is possible to prevent the ~null~ value in specific fields by adding ~NOT NULL~ to the field definition when creating the table, or adding after the fact by altering the table.
+** Join
+   There are three types of join.
+*** Cross Join
+    This simply performs Cartesian Product between the tables. Note that this is done implicitly when doing queries; recall ~FROM from-list~.
+*** Inner Join
+    Results in the matching rows from the Cartesian Product based on the join condition. Note, the following statements are equivalent.
+
+    #+BEGIN_SRC sql
+      SELECT *
+        FROM Sailors JOIN Reserves
+                         ON Sailors.sid = Reserves.sid;
+
+      SELECT *
+        FROM Sailors, Reserves
+       WHERE Sailors.sid = Reserves.sid;
+    #+END_SRC
+
+*** Outer Join
+
+    Outer Join gives the result of $A ∪ B$ after the Cartesian Product is calculated. When there are matching rows, like in /Inner Join/, they are displayed as expected. Where there are no matching rows, the entry is filled with null values. Depending on the query specification we can show only all of /A/, /B/, or both.
+
+    As an example, if we have it to show all of /A/ and the matching field name is /id/. If there is a an entry in /A/ where the /id/ is not in /B/ the row in /A/ will be displayed while nulling the fields of /B/.
+
+    You can choose between ~RIGHT~, ~LEFT~, or ~FULL~ Join when performing an outer join operation. The ~RIGHT~ will show all rows of the table on the right, ~LEFT~ will show all rows of the on the left, and ~FULL~ will show all the fields in both tables.
+    
+    Its syntax is as follows
+
+    #+BEGIN_SRC sql
+      SELECT select-list
+        FROM table1 [NATURAL] (RIGHT/LEFT/JOIN) JOIN table2
+                                          ON table1.field1 = table2.field2;
+    #+END_SRC
+    
+    Using ~NATURAL~ will not require to add the ~ON~ statement, as it will automatically match matching field names.
+** Constraints
+*** Check
+    Checks are made on fields in a given table to make sure that it applies to some validation rule. They are associated with a table and will be removed when said table is removed.
+    
+    Here is an exmaple:
+    #+BEGIN_SRC sql
+      CREATE TABLE Sailors(
+        sid INTEGER,
+        sname CHAR(10),
+        rating  INTEGER,
+        age  REAL,
+        PRIMARY KEY (sid),
+        CHECK( rating >= 1 AND rating <= 10 ));
+    #+END_SRC
+*** General Constraints
+
+    Constraints can be named.
+    #+BEGIN_SRC sql
+      CREATE TABLE Sailors(
+        sid INTEGER,
+        sname CHAR(10),
+        rating  INTEGER,
+        age  REAL,
+        PRIMARY KEY (sid),
+        CONSTRAINT validRating CHECK( rating >= 1 AND rating <= 10 ));
+    #+END_SRC
+
+*** Assertion
+    Assertions are made on tables to make sure that they follow some general rule. They are not associated with any table and will not be deleted on any table is deleted.
+    #+BEGIN_SRC sql
+      CREATE ASSERTION smallClub
+        CHECK((SELECT COUNT (S.sid) FROMSailors S) +
+              (SELECT COUNT (B.bid) FROMBoats B) < 100);
+    #+END_SRC
+    
 * Links
 #+CALL: ./code_snippets.org:get-brain-links()
 * Footnotes
