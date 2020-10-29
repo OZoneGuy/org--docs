@@ -700,6 +700,99 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
               (SELECT COUNT (B.bid) FROMBoats B) < 100);
     #+END_SRC
     
+** New Data Types and Domains
+   
+   SQL doesn't have the option to new data types as you would do in a programming language. Instead it can create aliases or 'sub types'. 
+
+   Aliases are simply different names for the same type:
+
+   #+BEGIN_SRC sql
+     CREATE TYPE rating AS INTEGER;
+   #+END_SRC
+
+   Here we created a new alias for ~INTEGER~ can called it ~rating~.
+   
+   'Sub types' are defined as follows:
+
+   #+BEGIN_SRC sql
+     CREATE DOMAIN ratingType AS INTEGER
+       DEFAULT 1 CHECK(VALUE >= 1 AND VALUE <= 10);
+   #+END_SRC
+   
+   Notice the two new keywords, ~DEFAULT~ and ~CHECK~. Default serves to give the default value for the new 'sub type' while check serves to assert some constraint.
+
+** Triggers
+   Triggers are procedures that are called when specific changes to the database happen. It is divided into three parts:
+
+   * Event
+   * Condition
+   * Action
+   
+     
+   NOTE: Triggers do not serve as constraints. The conditions defined in triggers do not apply any form of assertion or constraint on any table. 
+
+   This is the syntax of a trigger:
+
+   #+BEGIN_SRC sql
+     CREATE TRIGGER triggerName
+       [BEFORE|AFTER|INSTEAD OF] [INSERT|UPDATE|DELETE] ON tableName
+       WHEN condition
+       <ACTION>;
+   #+END_SRC
+
+   #+begin_quote
+   NOTE: It seems that ~INSTEAD OF~ is unique to DB2. It is best to consult the manual of the specific database when creating a trigger.
+   #+end_quote
+   
+   The keywords or self explanatory.
+   
+   ~<ACTION>~ is some procedure to execute when the trigger is activated. The syntax of which should be referenced from the specific database manual, as it seems it is different from database to database.
+   
+   Here are some examples:
+   #+BEGIN_SRC sql
+     CREATE TRIGGER trig1
+       BEFORE INSERT ON Sailors
+       DECLARE
+       count INTEGER
+       BEGIN
+         couunt :=0
+       END;
+   #+END_SRC
+   
+   This trigger declares a local variable ~count: INTEGER~ sets it to 0 and nothing else. This quite a useless trigger.
+   
+   #+BEGIN_SRC sql
+     CREATE TRIGGER trig2
+       AFTER INSERT ON Sailors
+       WHEN (new.rating > 5)
+       FOR EACH ROW
+         BEGIN
+           count := count +1
+         END;
+   #+END_SRC
+
+   This trigger uses the defined ~count~ variable to count the number of sailors who have a rating ~>5~. The ~new~ keyword referees to all the new rows.
+   
+   Another example is as follows:
+   #+BEGIN_SRC sql
+     CREATE TRIGGER trig3
+       AFTER INSERT ON Sailors
+       REFERENCING NEW TABLE NewSailors
+       FOR EACH STATEMENT
+         INSERT INTO YoingSailors(sid)
+         SELECT sid
+         FROM NewSailors
+         WHERE NewSailors.age <= 18;
+   #+END_SRC
+
+   Here we have two new sets of key words, ~REFERENCING NEW TABLE~ and ~FOR EACH STATEMENT~. The latter is self explanatory.
+
+   ~REFERENCING NEW TABLE~ references the newly inserted rows as a table called /NewSailors/.
+   
+
+   The purpose of this trigger is to keep track of all the sailors who are 18 or younger.
+
+
 * Links
 #+CALL: ./code_snippets.org:get-brain-links()
 * Footnotes
