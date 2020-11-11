@@ -95,15 +95,15 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    This in turn shields the users from the physical schema as well, how is the data stored physically. This is called *physical data independence*.
 
 * Introduction to Database design
-  
+
   The purpose of a database is to store information about real life systems and represent them. In a relational database, there are two main concepts used to achieve this; entities and relationships.
 ** Entities
    Entities' purpose is to simulate actual real life objects. Consider a university. If we want to simulate using a relational database, we would use entities to represent students, professors, courses, etc. It is analogous to classes in OOP but not quite the same. As a rule of thump, if you are not sure what to use to represent something see if you would use a class to represent it.
-   
+
    Entities have attributes. These attributes are data about these entities; a student can have 'name', 'id', and 'level', while a professor could have 'id', 'name', 'salary', etc. The attributes chosen for a specific entity will depend on the system and what the client wants to store about them.
 
    In an entity relations diagram, ER diagram, entities are represented using rectangles and attributes using ovals. Here is an example[fn:3].
-   
+
    #+CAPTION: Entity with attributes example
    #+BEGIN_SRC dot :file img/DB3/entity_example.png
      graph G {
@@ -116,9 +116,9 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    #+END_SRC
 
    Sometimes we want to identify each entity with some unique attribute. This is usually done is the form of 'ID', or some variant. This is represent by underlining the 'key' attributes. There could be multiple key attributes for the same entity. In this scenario the unique combination is what is used to identify each entity. This is called the /key set/.
-   
+
    When assigning unique attribute(s) to an entity, no two different entities can have the same /key set/.
-   
+
    #+CAPTION: Entity with a unique key
    #+BEGIN_SRC dot :file img/DB3/entity_key_example.png
      graph G {
@@ -129,9 +129,9 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
        student -- {id, name, level};
      }
    #+END_SRC
-   
+
 ** Relationships
-   
+
    Having just entities is not enough to represent a system. We need to also describe how these entities interact with each other, or what is their 'relations'. Continuing with our university example, suppose we have courses and we want to show that a student takes a specific course or a set of courses. This is done through relationships. They are represented using diamonds in an ER diagram.
 
    #+CAPTION: Relationship example
@@ -156,7 +156,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    #+END_SRC
 
    Relationships can also store information about the relation. For example, we can record when was the course last taken and what was grade of the student. This is done by adding attributes to the relation itself.
-   
+
    #+CAPTION: Relationship with attributes
    #+BEGIN_SRC dot :file img/DB3/relations_attr_example.png
      graph G {
@@ -182,14 +182,14 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
        enrolled -- {student, course};
      }
    #+END_SRC
-   
+
 *** Constraints
     Sometimes you want to put constraints on relationships, like having that all students must be enrolled in a course or that each course must have exactly one instructor, if they have any. The first one is called a /participation constraint/ while the latter is called a /key constraint/.
 
 **** Participation Constraint
-     
+
      It basically means that *all* instances of an entity must participate in the relation. It is represented by *bold* line connecting the affected entity with the relation.
-     
+
      #+CAPTION: Participation constraint example
      #+BEGIN_SRC dot :file img/DB3/part_const_example.png
 
@@ -219,9 +219,9 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
      #+END_SRC
 
 **** Key Constraint
-     
+
      This indicates that each instance of an entity can participate in a relationship *only once*.
-     
+
      #+CAPTION: Teaches relationship
      #+BEGIN_SRC dot :file img/DB3/key_const_example.png
        graph G {
@@ -244,7 +244,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
      #+END_SRC
 
      This diagram can be improved for better representation, but I am just keeping it simple for the example.
-     
+
 *** More than two in a relation
     So far we looked at relations where only two entities are participating. But that doesn't mean that more entities couldn't participate in the same relation, they definitely could! But we prefer as little participants as possible in a single relation to maintain simplicity and maintainability. Usually if you have more than three entities in the same relation it means that it could be simpler and you're doing it wrong. But it depends entirely on the rules you want to preserve and portray.
 
@@ -285,10 +285,10 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
       }
       }
     #+END_SRC
-     
+
 *** Weak entities
     Sometimes we want to store information that are relevant to a specific instant of an entity. For example, the university might want to your address and contact information. But there would no point in keeping this information after you left the and it would be quite useless to give them a key set since they are unique to you! Here is where /weak entities/ come to play. They are entities that are identified by another entity which it is related to. They are identified by their related entity and /maybe/ their own key, since you might have a few addresses so we want to identify each one separately.
-    
+
     In an ER diagram they appear similar to a normal entity by but they drawn in bold and their relation as well. As such:
 
     #+CAPTION: Weak Entity example
@@ -312,12 +312,12 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
         addresses -- student;
       }
     #+END_SRC
-    
+
     This has the added benefit of being able to store information about the relation. While it is not necessarily useful here, it can be  vital in other scenarios. So it is best to keep it in the tool belt
 
 ** Class Hierarchy
     You ever heard classes and sub classes in OOP? Well, this is basically it but for databases! Sub classes inherit attributes from their parent class and they can be treated like their parent class. This is usually used when multiple entities share a common set of attributes or if you have different kinds of the same entities, like employees. It is represented as a *ISA* triangle connecting bellow the parent and above the children. As such:
-    
+
     #+CAPTION: *ISA* classes hierarchy example
     #+BEGIN_SRC dot :file img/DB3/isa_example.png
       graph G {
@@ -340,7 +340,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
         em_isa:s -- {c_employee:n, h_employee:n};
       }
     #+END_SRC
-    
+
     For class hierarchies we might want to define some constraints. Those are /covering constraint/ and /overlapping constraint/. The first dictates whether or not sub classes *must* cover the entire parent class, i.e every instance of the parent class must be part of at least one sub class. The latter dictates whether or not sub classes can overlap. These depend on the system being represented. They have no representation in the ER diagram but are included as notes and annotations for the diagram. In absence of a /covering constraint/ we assume that there isn't any and the sub classes don't have to cover the parent. For /overlapping constraint/ we assume that sub classes *cannot* overlap.
 * TODO The Relation Model
 * Relational Algebra
@@ -357,49 +357,49 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
 *** Conditional Joins
     This is the most general form of join. It takes a /join condition/, /c/, and a pair of relations as arguments and returns a new relation. This can be defined using a selection and a cross product as follows:
 
-    $R ⋈_c S = σ_c (R×S)$ 
-    
+    $R ⋈_c S = σ_c (R×S)$
+
     Note the /c/ can, and usually does, refer to attributes of /R/ and /S/. The reference can be in the form of position or name, /R.4/ or /R.field_Name/.
 
 *** Equijoin
-    
+
     This is a special form of the previous join. In an Equijoin, we match equal fields. Something like this:
 
     $S⋈_{R.sid=S.id}R$     /Sometimes written as/ $S⋈_{sid}R$
-    
+
     Notice that we are comparing the field on both relations. This has the side effect of unnamed fields in the final relation, since we don't know to which relation /sid/ belongs to.
 *** Natural Join
-    
+
     A natural join is a more extreme form of equijoin, equality is specified on /all/ fields with same name on /R/ and /S/. In this case, we write it as such:
 
     $S⋈R$
-    
+
     Notice that it doesn't have condition specified. The equalities are implicit. Since there are so much of them, we don't bother writing them all down.
 ** Division
-   
+
    The division operator is most useful for queries such as “Find all the students who enrolled in all the courses.” Knowing what it does exactly and how to define it using other operators is a useful exercise, but not necessary. Not as popular as the other operators. In fact, most DBMS don't even bother implementing it as a distinct method but leaves the user to rely on other operators to achieve the same result, unlike the join operator.
 
-   So bear with me for a second, I need to go abstract for a bit. Imagine we have two relations, /A/ and /B/. Let /A/ have the fields /x/ and /y/ and /B/ have just /y/, which have the same domain as in /A/. $A ∈ ⟨x, y⟩$ and $B ∈ ⟨y⟩. Following so far? A division $A/B$ would be set of all /x/ values such that for *every* /y/ value in /B/ there is a tuple $⟨x, y⟩$ in /A/. $∀ y ∈ B ∙ (∃ x ∙ ⟨x, y⟩ ∈ A)$ this gives us the 𝑥s that satisfy this property. If you need to take your time or go for a walk to understand this feel free to.
-   
+   So bear with me for a second, I need to go abstract for a bit. Imagine we have two relations, $A$ and $B$. Let $A$ have the fields $x$ and $y$ and $B$ have just $y$, which have the same domain as in $A$. $A ∈ ⟨x, y⟩$ and $B ∈ ⟨y⟩$. Following so far? A division $A/B$ would be set of all $x$ values such that for *every* $y$ value in $B$ there is a tuple $⟨x, y⟩$ in $A$. $∀ y ∈ B ∙ (∃ x ∙ ⟨x, y⟩ ∈ A)$ this gives us the $x$s that satisfy this property. If you need to take your time or go for a walk to understand this feel free to.
+
    Division can be defined as:
 
    $π_x((π_x(A) × B)-A)$
 
  For examples regarding relation algebra see the book.
 * Queries, Programming, Triggers
-  
+
   Queries are what allows us to manipulate the Database, whether it be the stored data or the database structure itself. SQL is the most common language for database queries and is the focus of the book.
-  
+
   We will be using the following table definition in our examples for SQL statements:
-  
+
   #+BEGIN_QUOTE:
   Sailors(_/sid:/ *integer*_, /sname:/ *string*, /rating:/ *integer*, /age:/ *real*)
-  
+
   Boats(_/bid:/ *integer*_, /bname:/ *string*, /color:/ *string*)
 
   Reserves(_/sid:/ *integer*, /bid:/ *integer*, /day:/ *date*_)
   #+END_QUOTE:
-  
+
   The tables related to these deviations can be found [[http://pages.cs.wisc.edu/~dbbook/openAccess/thirdEdition/exercise_data/all_tables.zip][here]] as a zip file.
 
 **  Basic Query Form
@@ -413,11 +413,11 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
   #+END_EXAMPLE
 
   Fist is the ~SELECT~ statement, which identifies it as a query, followed by the list of columns/fields to be retained or showed in the results. Next is the ~FROM~ keyword, which specifies a cross product of tables. Or more simply, followed by the list of tables to run the query on. Lastly is the optional ~WHERE~, where you can specify conditions on the selection.
-  
+
   Such query can be easily represented in relational algebra.
 
   :TODO: Add algebra examples.
-  
+
   Here is an example of a simple query.
   #+CAPTION: Find the names and ages of all the sailors.
   #+LABEL: Q:selectSailors
@@ -429,7 +429,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
   The result is a set of rows containing the fields /S.sname/ and /S.age/. If more than one sailor have the same name and age, the entry will only appear once. This is due to the ~DISTINCT~ keyword; if omitted we will get duplicate entries. Since there are no conditions, this is equivalent to the projection, /π/, operation in relational algebra.
 
   Another example:
-  
+
   #+CAPTION: Find all the sailors with a rating higher than 7
   #+LABEL: Q:querSelSRating7
   #+BEGIN_SRC sql
@@ -437,17 +437,17 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
       FROM Sailors AS S
      WHERE S.rating > 7;
   #+END_SRC
-  
+
   This query uses the optional keyword ~AS~  which acts like a projection, $ρ$.
- 
+
   When evaluating a query, SQL evaluates it in the following order:
- 
+
   1. Compute the cross product of the tables in the *from-list*
   2. Delete rows in the cross product that fail the *CONDITION*
   3. Delete all columns not in *select-list*
   4. If ~DISTINCT~ is specified, eliminate duplicate rows
-  
-     
+
+
   This is basic recipe for SQL evaluation, but usually is inefficient. A DBMS doesn't usually evaluate as stated. But that discussion will probably come at a later date.
 
   #+begin_center
@@ -465,36 +465,36 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    #+END_SRC
 
    We can see that in the *column-list* we have a mathematical expression and the use of ~AS~. SQL allows for expressions on column names or constants. It follows this structure: ~expression AS new_name~, where ~expession~ is any expression as described and ~new_name~ is the column name for the computed data. ~AS~ here serves as a projection, $ρ$. In this example we add 1 to the rating of all the sailors in the query and name the results *rating*.
-   
+
    In the ~WHERE~ part of the statement we are comparing strings. For strings we can use the ~LIKE~ keyword when we want to use some wildcard, i.e we give part of the string the query will match it. Wildcards in SQL are ~%~ analogous to ~*~ in regex, and ~_~ which matches any one character.
 *** Set Operations
-    
+
     When evaluating queries we can make of use some set operations, such as /Union/, /Intersect/, and /Except/, or /set difference/. These operations match their definitions in Set theory.
 
     * Union format
       #+begin_quote
         QUERY_{0}
-        
+
         /UNION/
-        
+
         ...
-        
+
         /UNION/
-        
+
         QUERY_{n}
       #+end_quote
-      
+
     * Intersect
-      
+
       #+begin_quote
         QUERY_{0}
-        
+
         /INTERSECT/
-        
+
         ...
-        
+
         /INTERSECT/
-        
+
         QUERY_{n}
       #+end_quote
 
@@ -502,20 +502,20 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
 
       #+begin_quote
         QUERY_{0}
-        
+
         /EXCEPT/
-        
+
         ...
-        
+
         /EXCEPT/
-        
+
         QUERY_{n}
       #+end_quote
-      
+
 *** Nested Query
 
     Since queries simply return a set of rows and their input is a set of rows, we can chain them. Or more accurately, /nest/ queries inside of queries. The nested queries can appear in the ~FROM~, ~HAVING~ (to be discussed later), or the ~WHERE~ clauses.
-    
+
     We will be looking into the ~WHERE~ clause for now. To compare a condition using set queries we use the following keywords:
 
     * ~IN~ and ~NOT IN~
@@ -527,7 +527,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
       As far as I can tell, this is exactly like ~IN~. Except for the fact that the query has to be reevaluated for each entry on the parent query.
 
     * ~ANY~
-      
+
       This is usually used to compare the data to all the rows in the nested query. Returns true if there is at least one case where the condition holds. Analogous to $∃$.
 
       #+CAPTION: ~ANY~ example
@@ -538,7 +538,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
                               FROM Sailors S2
                              WHERE S2.name Like 'Bob%')
       #+end_src
-      
+
       This query return the id of all sailors who are older than any sailor whose name begins with 'Bob'.
 
     * ~ALL~
@@ -562,10 +562,10 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
       Returns the average of sum numerical column.
     * ~MIN(A)~ and ~MAX(A)~
       Return the minimum/maximum of some column(s).
-      
+
 
     Something to note is that we cannot mix the aggregate operations with the column list. So something like the following is illegal:
-    
+
     #+CAPTION: Illegal query
     #+LABEL: Q:AgrIllegal
     #+BEGIN_SRC sql
@@ -574,7 +574,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
     #+END_SRC
 
     While this is legal:
-    
+
     #+CAPTION: Legal Aggregation Query
     #+LABEL: Q:AgrLegal
      #+BEGIN_SRC sql
@@ -586,10 +586,10 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
      #+END_SRC
 
      This query was used to get the oldest sailors in the database.
-     
+
 *** Grouping, ~GROUP BY~ and ~HAVING~
     There are some scenarios where we want to group the results based on 'qualification'. Like grouping students by year, or sailors by rating. This is allowed by the ~GROUP BY~ keyword. Its syntax is as follows:
-    
+
     #+BEGIN_SRC sql
       SELECT target-list
         FROM relation-list
@@ -602,14 +602,14 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
       * An aggregate operation,
       * or an attribute name
         * Attributes must be a subset of ~group-list~, i.e. they must appear in ~group-list~.
-  
-          
+
+
     The rest are self explanatory.
 
     A group are the set of tuples with the same values for all attributes in the ~group-list~.
-    
+
     ~group-qualification~ can only contain attributes from the ~group-list~ or aggregate operations.
-    
+
     This is evaluated as follows:
     1. The cross product is computed from ~relation-list~
     2. Tuples that fail ~qualification~ are discarded
@@ -628,8 +628,8 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    * If a ~WHERE~ clause receives ~unknown~ it is terminated, essentially treated as ~False~
    * Any arithmetic operation will return unknown when given ~null~
    * All aggregation operations will not count ~null~ values, except for ~COUNT~.
-   
-     
+
+
    It is possible to prevent the ~null~ value in specific fields by adding ~NOT NULL~ to the field definition when creating the table, or adding after the fact by altering the table.
 ** Join
    There are three types of join.
@@ -655,7 +655,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
     As an example, if we have it to show all of /A/ and the matching field name is /id/. If there is a an entry in /A/ where the /id/ is not in /B/ the row in /A/ will be displayed while nulling the fields of /B/.
 
     You can choose between ~RIGHT~, ~LEFT~, or ~FULL~ Join when performing an outer join operation. The ~RIGHT~ will show all rows of the table on the right, ~LEFT~ will show all rows of the on the left, and ~FULL~ will show all the fields in both tables.
-    
+
     Its syntax is as follows
 
     #+BEGIN_SRC sql
@@ -663,12 +663,12 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
         FROM table1 [NATURAL] (RIGHT/LEFT/JOIN) JOIN table2
                                           ON table1.field1 = table2.field2;
     #+END_SRC
-    
+
     Using ~NATURAL~ will not require to add the ~ON~ statement, as it will automatically match matching field names.
 ** Constraints
 *** Check
     Checks are made on fields in a given table to make sure that it applies to some validation rule. They are associated with a table and will be removed when said table is removed.
-    
+
     Here is an exmaple:
     #+BEGIN_SRC sql
       CREATE TABLE Sailors(
@@ -699,10 +699,10 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
         CHECK((SELECT COUNT (S.sid) FROMSailors S) +
               (SELECT COUNT (B.bid) FROMBoats B) < 100);
     #+END_SRC
-    
+
 ** New Data Types and Domains
-   
-   SQL doesn't have the option to new data types as you would do in a programming language. Instead it can create aliases or 'sub types'. 
+
+   SQL doesn't have the option to new data types as you would do in a programming language. Instead it can create aliases or 'sub types'.
 
    Aliases are simply different names for the same type:
 
@@ -711,14 +711,14 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    #+END_SRC
 
    Here we created a new alias for ~INTEGER~ can called it ~rating~.
-   
+
    'Sub types' are defined as follows:
 
    #+BEGIN_SRC sql
      CREATE DOMAIN ratingType AS INTEGER
        DEFAULT 1 CHECK(VALUE >= 1 AND VALUE <= 10);
    #+END_SRC
-   
+
    Notice the two new keywords, ~DEFAULT~ and ~CHECK~. Default serves to give the default value for the new 'sub type' while check serves to assert some constraint.
 
 ** Triggers
@@ -727,9 +727,9 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    * Event
    * Condition
    * Action
-   
-     
-   NOTE: Triggers do not serve as constraints. The conditions defined in triggers do not apply any form of assertion or constraint on any table. 
+
+
+   NOTE: Triggers do not serve as constraints. The conditions defined in triggers do not apply any form of assertion or constraint on any table.
 
    This is the syntax of a trigger:
 
@@ -743,11 +743,11 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    #+begin_quote
    NOTE: It seems that ~INSTEAD OF~ is unique to DB2. It is best to consult the manual of the specific database when creating a trigger.
    #+end_quote
-   
-   The keywords or self explanatory.
-   
+
+   The keywords are self explanatory.
+
    ~<ACTION>~ is some procedure to execute when the trigger is activated. The syntax of which should be referenced from the specific database manual, as it seems it is different from database to database.
-   
+
    Here are some examples:
    #+BEGIN_SRC sql
      CREATE TRIGGER trig1
@@ -758,9 +758,9 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
          couunt :=0
        END;
    #+END_SRC
-   
+
    This trigger declares a local variable ~count: INTEGER~ sets it to 0 and nothing else. This quite a useless trigger.
-   
+
    #+BEGIN_SRC sql
      CREATE TRIGGER trig2
        AFTER INSERT ON Sailors
@@ -772,7 +772,7 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    #+END_SRC
 
    This trigger uses the defined ~count~ variable to count the number of sailors who have a rating ~>5~. The ~new~ keyword referees to all the new rows.
-   
+
    Another example is as follows:
    #+BEGIN_SRC sql
      CREATE TRIGGER trig3
@@ -788,10 +788,9 @@ These notes follow /Raghu Ramakrishnan, Johannes Gehrke - Database Management Sy
    Here we have two new sets of key words, ~REFERENCING NEW TABLE~ and ~FOR EACH STATEMENT~. The latter is self explanatory.
 
    ~REFERENCING NEW TABLE~ references the newly inserted rows as a table called /NewSailors/.
-   
+
 
    The purpose of this trigger is to keep track of all the sailors who are 18 or younger.
-
 
 * Links
 #+CALL: ./code_snippets.org:get-brain-links()
